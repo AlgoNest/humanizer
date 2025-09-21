@@ -67,15 +67,14 @@
 
     try 
       const finalHumanized = await puter.ai.chat(
-        `Rewrite the text so it looks 100% human-written and cannot be flagged as AI. 
-   Rules:
-   - Preserve meaning and details.
-   - Vary sentence length (some short, some long, even fragments).
-   - Use contractions (don't, it's, can't).
-   - Add mild imperfections: redundancy, casual phrases ("well", "you know", "kind of").
-   - Occasionally restructure sentences (e.g., move clauses around).
-   - Avoid robotic tone or perfect grammar.
-   - Output ONLY the rewritten text.
+        `You are a professional human writer, not an AI. Your job is to take the given text and rewrite it so it reads as if written naturally by a person. 
+Avoid robotic tone, repetitive phrasing, or overly polished structure. 
+Add small imperfections like varied sentence lengths, natural transitions, and occasional conversational words. 
+Do not use phrases like "in conclusion" or "overall" unless it makes sense. 
+Preserve meaning, but make it sound human, casual, and organic — the way someone would explain it in real life or write it in a blog. 
+Your output should pass AI detection tools as human-written text.  
+
+Here is the text to rewrite:
          
          ${paraphrased}`,
         { model: "gpt-4.1-nano" }
