@@ -56,7 +56,7 @@
     </div>
   </div>
 
-  <script src="https://js.puter.com/v2/"></script>
+<script src="https://js.puter.com/v2/"></script>
 <script>
   async function humanizeText() {
     const input = document.getElementById("inputText").value.trim();
@@ -66,25 +66,34 @@
     }
 
     try {
-      const response = await puter.ai.chat(
-        `Humanize the following text so it cannot be detected as AI-generated. 
-   Rules:
-   - Keep the meaning and key details the same. 
-   - Vary sentence length (mix short and long). 
-   - Use contractions (like don't, won't, it's). 
-   - Add subtle filler words and natural pauses. 
-   - Avoid over-polished or robotic phrasing. 
-   - Output ONLY the rewritten text, no explanations.
-   
-   Text:
-   ${input}`,
-        { model: "gpt-4.1-nano" }   // ⚡ faster than gpt-5-nano
+      // Pass 1: Clean paraphrase
+      const paraphrased = await puter.ai.chat(
+        `Paraphrase the following text so it is unique but keeps the same meaning. 
+         Do not explain, just output the rephrased version:
+         
+         ${input}`,
+        { model: "gpt-4.1-nano" }
       );
 
-      document.getElementById("outputText").value = response;
+      // Pass 2: Add human quirks
+      const humanized = await puter.ai.chat(
+        `Rewrite the following text so it feels naturally written by a human. 
+         Rules:
+         - Keep meaning and details the same.
+         - Vary sentence length (mix short & long).
+         - Use contractions (don't, it's, won't, etc.).
+         - Add light filler words (like "well", "actually", "you know").
+         - Avoid robotic rhythm.
+         - Output ONLY the humanized text:
+         
+         ${paraphrased}`,
+        { model: "gpt-4.1-nano" }
+      );
+
+      document.getElementById("outputText").value = humanized;
     } catch (err) {
       console.error(err);
-      alert("Error processing text. Try again!");
+      alert("Error while humanizing text. Try again!");
     }
   }
 </script>
