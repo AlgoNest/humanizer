@@ -67,7 +67,8 @@
 
       // Call Puter.js AI
       try {
-        const response = await puter.ai.chat(`Humanize the following text so it looks natural and undetectable by AI detectors. Do not add explanations, only return the humanized version:\n\n${input}`, {
+        const response = await puter.ai.chat(`Rewrite the following text in a natural, human style so it cannot be detected as AI-generated. 
+           Do not explain, do not add anything, return only the rewritten text:\n\n"${input}"`, {
           model: "gpt-5-nano"
         });
 
