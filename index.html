@@ -66,29 +66,18 @@
     }
 
     try {
-      const response = await puter.ai.chat({
-        model: "gpt-4.1-nano",
-        messages: [
-          {
-            role: "system",
-            content: `You are a professional human writer, not an AI. 
-Rewrite the user's text so it reads naturally, like it was written by a person. 
-Avoid robotic tone, repetitive phrasing, or overly polished structure. 
-Add small imperfections: varied sentence lengths, natural transitions, and conversational words. 
-Preserve meaning, but make it casual, organic, and blog-like. 
-The output must pass AI detection tools as human-written.`
-          },
-          {
-            role: "user",
-            content: input
-          }
-        ]
-      });
+      const response = await puter.ai.chat(
+        `Rewrite the following text so it feels 100% human-written. 
+Avoid robotic tone, clichés, and AI-style phrasing. 
+Make it natural, casual, and organic, with varied sentence length, light imperfections, 
+and a real-person vibe. Keep the meaning, but disguise all AI traces. 
 
-      // Extract and show final output
-      const finalHumanized = response.message?.content || "No output generated.";
-      document.getElementById("outputText").value = finalHumanized;
+Text:
+${input}`,
+        { model: "gpt-5-nano" }  // ✅ use GPT-5-nano for speed
+      );
 
+      document.getElementById("outputText").value = response;
     } catch (err) {
       console.error(err);
       alert("Error while processing text.");
