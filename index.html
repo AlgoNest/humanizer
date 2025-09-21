@@ -19,8 +19,13 @@
     document.getElementById("humanizeBtn").addEventListener("click", async () => {
       let text = document.getElementById("inputText").value;
 
-      let prompt = `Rewrite the following text so it sounds natural, human-written, 
-      and avoids AI detection. Keep meaning the same:\n\n${text}`;
+      let prompt = `You are a text humanizer. 
+Your ONLY task:
+- Rewrite the input text to sound natural and human-like. 
+- Do not explain, do not add comments, do not mention "humanized".
+- Only return the rewritten text. 
+
+Input: """${text}`;
 
       try {
         // Direct call (no login, no API key)
