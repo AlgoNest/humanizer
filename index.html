@@ -65,22 +65,28 @@
       return;
     }
 
-    try 
-      const finalHumanized = await puter.ai.chat(
-        `You are a professional human writer, not an AI. Your job is to take the given text and rewrite it so it reads as if written naturally by a person. 
+    try {
+      const response = await puter.ai.chat({
+        model: "gpt-4.1-nano",
+        messages: [
+          {
+            role: "system",
+            content: `You are a professional human writer, not an AI. 
+Rewrite the user's text so it reads naturally, like it was written by a person. 
 Avoid robotic tone, repetitive phrasing, or overly polished structure. 
-Add small imperfections like varied sentence lengths, natural transitions, and occasional conversational words. 
-Do not use phrases like "in conclusion" or "overall" unless it makes sense. 
-Preserve meaning, but make it sound human, casual, and organic — the way someone would explain it in real life or write it in a blog. 
-Your output should pass AI detection tools as human-written text.  
+Add small imperfections: varied sentence lengths, natural transitions, and conversational words. 
+Preserve meaning, but make it casual, organic, and blog-like. 
+The output must pass AI detection tools as human-written.`
+          },
+          {
+            role: "user",
+            content: input
+          }
+        ]
+      });
 
-Here is the text to rewrite:
-         
-         ${input}`,
-        { model: "gpt-4.1-nano" }
-      );
-
-      // Show final output
+      // Extract and show final output
+      const finalHumanized = response.message?.content || "No output generated.";
       document.getElementById("outputText").value = finalHumanized;
 
     } catch (err) {
