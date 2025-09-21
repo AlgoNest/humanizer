@@ -65,26 +65,17 @@
       return;
     }
 
-    try {
-      // Pass 1: Paraphrase
-      const paraphrased = await puter.ai.chat(
-        `Paraphrase this text into different wording but same meaning. 
-         No extra output, just the rewritten text:
-         
-         ${input}`,
-        { model: "gpt-4.1-nano" }
-      );
-
-      // Pass 2: Humanize quirks
+    try 
       const finalHumanized = await puter.ai.chat(
-        `Take this paraphrased text and rewrite it so it feels written by a human.
-         Rules:
-         - Same meaning, same details.
-         - Mix sentence lengths (short + long).
-         - Use contractions ("don't", "it's", "won't").
-         - Add natural flow with light filler (like "well", "actually", "you know").
-         - Avoid robotic rhythm or overly formal tone.
-         - Output ONLY the rewritten text:
+        `Rewrite the text so it looks 100% human-written and cannot be flagged as AI. 
+   Rules:
+   - Preserve meaning and details.
+   - Vary sentence length (some short, some long, even fragments).
+   - Use contractions (don't, it's, can't).
+   - Add mild imperfections: redundancy, casual phrases ("well", "you know", "kind of").
+   - Occasionally restructure sentences (e.g., move clauses around).
+   - Avoid robotic tone or perfect grammar.
+   - Output ONLY the rewritten text.
          
          ${paraphrased}`,
         { model: "gpt-4.1-nano" }
