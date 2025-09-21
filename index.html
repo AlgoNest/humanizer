@@ -57,27 +57,30 @@
   </div>
 
   <script src="https://js.puter.com/v2/"></script>
-  <script>
-    async function humanizeText() {
-      const input = document.getElementById("inputText").value.trim();
-      if (!input) {
-        alert("Please paste some text first!");
-        return;
-      }
-
-      // Call Puter.js AI
-      try {
-        const response = await puter.ai.chat(`Rewrite the following text in a natural, human style so it cannot be detected as AI-generated. 
-           Do not explain, do not add anything, return only the rewritten text:\n\n"${input}"`, {
-          model: "gpt-5-nano"
-        });
-
-        document.getElementById("outputText").value = response;
-      } catch (err) {
-        console.error(err);
-        alert("Error processing text. Try again!");
-      }
+<script>
+  async function humanizeText() {
+    const input = document.getElementById("inputText").value.trim();
+    if (!input) {
+      alert("Please paste some text first!");
+      return;
     }
-  </script>
+
+    try {
+      const response = await puter.ai.chat(
+        `Rephrase the following text so it reads like natural human writing. 
+         Keep the same meaning, structure, and length. 
+         Do not add, remove, or explain anything. 
+         Output ONLY the rewritten text:\n\n${input}`,
+        { model: "gpt-4-mini" }   // ⚡ faster than gpt-5-nano
+      );
+
+      document.getElementById("outputText").value = response;
+    } catch (err) {
+      console.error(err);
+      alert("Error processing text. Try again!");
+    }
+  }
+</script>
+
 </body>
 </html>
