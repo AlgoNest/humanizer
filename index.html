@@ -67,10 +67,17 @@
 
     try {
       const response = await puter.ai.chat(
-        `Rephrase the following text so it reads like natural human writing. 
-         Keep the same meaning, structure, and length. 
-         Do not add, remove, or explain anything. 
-         Output ONLY the rewritten text:\n\n${input}`,
+        `Humanize the following text so it cannot be detected as AI-generated. 
+   Rules:
+   - Keep the meaning and key details the same. 
+   - Vary sentence length (mix short and long). 
+   - Use contractions (like don't, won't, it's). 
+   - Add subtle filler words and natural pauses. 
+   - Avoid over-polished or robotic phrasing. 
+   - Output ONLY the rewritten text, no explanations.
+   
+   Text:
+   ${input}`,
         { model: "gpt-4.1-nano" }   // ⚡ faster than gpt-5-nano
       );
 
