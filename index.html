@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Humanize.org MVP</title>
+  <title>Humanize</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
@@ -11,18 +11,25 @@
     .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     textarea { resize: none; }
     .spinner-border { display: none; }
+    .strength-label { font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card p-4">
       <h2 class="mb-3 text-center fw-bold">📝 Humanize.org MVP</h2>
-      <p class="text-muted text-center">Paste your AI-generated text and make it sound more natural.</p>
+      <p class="text-muted text-center">Paste your AI text and adjust the <b>strength</b> for humanization.</p>
 
       <!-- Input -->
       <div class="mb-3">
         <label class="form-label fw-semibold">Paste Your AI Text</label>
         <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..."></textarea>
+      </div>
+
+      <!-- Strength Slider -->
+      <div class="mb-3">
+        <label for="strength" class="form-label strength-label">Humanization Strength: <span id="strengthValue">50</span>%</label>
+        <input type="range" class="form-range" min="0" max="100" value="50" id="strength">
       </div>
 
       <!-- Buttons -->
@@ -52,6 +59,13 @@
     const inputText = document.getElementById("inputText");
     const outputText = document.getElementById("outputText");
     const loading = document.getElementById("loading");
+    const strengthSlider = document.getElementById("strength");
+    const strengthValue = document.getElementById("strengthValue");
+
+    // Update strength value display
+    strengthSlider.addEventListener("input", () => {
+      strengthValue.textContent = strengthSlider.value;
+    });
 
     // Simple synonym dictionary
     const synonyms = {
@@ -69,27 +83,29 @@
     };
 
     // Humanizer Function
-    function humanizeText(text) {
+    function humanizeText(text, strength) {
       let sentences = text.split(/(?<=[.!?])\s+/);
 
       return sentences.map((sentence, index) => {
         let s = sentence.trim();
         if (!s) return "";
 
-        // Replace synonyms
+        // Replace synonyms more often with higher strength
         for (let word in synonyms) {
           const regex = new RegExp("\\b" + word + "\\b", "gi");
-          s = s.replace(regex, synonyms[word]);
+          if (Math.random() * 100 < strength) {
+            s = s.replace(regex, synonyms[word]);
+          }
         }
 
-        // Add light casual fillers every few sentences
-        if (index % 4 === 0 && s.length > 30) {
+        // Add fillers sometimes (based on strength)
+        if (Math.random() * 100 < strength / 3 && s.length > 30) {
           const fillers = ["To be fair,", "In simple terms,", "You could say,", "Honestly,"];
           s = fillers[Math.floor(Math.random() * fillers.length)] + " " + s;
         }
 
-        // Slight variation
-        if (Math.random() > 0.7) {
+        // Mild sentence variation
+        if (Math.random() * 100 < strength / 2) {
           s = s.replace(" is ", " is actually ");
         }
 
@@ -100,6 +116,7 @@
     // Button Events
     humanizeBtn.addEventListener("click", () => {
       const text = inputText.value.trim();
+      const strength = parseInt(strengthSlider.value);
       if (!text) {
         alert("Please paste some text first!");
         return;
@@ -109,16 +126,18 @@
       humanizeBtn.disabled = true;
       clearBtn.disabled = true;
       inputText.disabled = true;
+      strengthSlider.disabled = true;
       loading.style.display = "inline-block";
 
       setTimeout(() => {
-        const result = humanizeText(text);
+        const result = humanizeText(text, strength);
         outputText.value = result;
 
         // Re-enable
         humanizeBtn.disabled = false;
         clearBtn.disabled = false;
         inputText.disabled = false;
+        strengthSlider.disabled = false;
         loading.style.display = "none";
       }, 1000);
     });
