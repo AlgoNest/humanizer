@@ -2,150 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Humanizer - Smart Offline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Humanize.org MVP</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background: #f8f9fa; }
-    .container { max-width: 900px; margin-top: 50px; }
-    .card { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    textarea { resize: none; min-height: 200px; }
-    .btn-custom {
-      background: #4CAF50; color: white;
-      border-radius: 25px; padding: 10px 30px;
-      font-size: 18px; font-weight: bold;
-    }
-    .btn-custom:hover { background: #45a049; color: white; }
-    .spinner-border { display: none; margin-left: 10px; }
+    body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+    .container { max-width: 900px; margin-top: 40px; }
+    .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    textarea { resize: none; }
+    .spinner-border { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card p-4">
-      <h2 class="text-center mb-4">AI Humanizer (Offline Smart Mode)</h2>
-      
-      <!-- Input Section -->
-      <label for="inputText" class="form-label">Paste your AI text here:</label>
-      <textarea id="inputText" class="form-control mb-3" placeholder="Paste AI-generated text here..."></textarea>
+      <h2 class="mb-3 text-center fw-bold">📝 Humanize.org MVP</h2>
+      <p class="text-muted text-center">Make AI text more human-like. Choose <b>Bypass</b> or <b>Article</b> mode.</p>
 
-      <div class="text-center">
-        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize</button>
-        <div id="loadingSpinner" class="spinner-border text-success" role="status"></div>
+      <!-- Input -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Paste Your AI Text</label>
+        <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..."></textarea>
       </div>
 
-      <!-- Output Section -->
-      <div class="mt-4">
-        <label for="outputText" class="form-label">Humanized Text:</label>
-        <textarea id="outputText" class="form-control" placeholder="Your humanized text will appear here..." readonly></textarea>
+      <!-- Mode Selection -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Mode</label>
+        <select id="mode" class="form-select">
+          <option value="bypass">Bypass Mode (for AI detection)</option>
+          <option value="article">Article Mode (for essays & blogs)</option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex gap-2 mb-3">
+        <button id="humanizeBtn" class="btn btn-primary flex-fill">✨ Humanize</button>
+        <button id="clearBtn" class="btn btn-outline-secondary flex-fill">Clear</button>
+      </div>
+
+      <!-- Spinner -->
+      <div class="text-center mb-3">
+        <div id="loading" class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Processing...</span>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Humanized Output</label>
+        <textarea id="outputText" class="form-control" rows="6" readonly></textarea>
       </div>
     </div>
   </div>
 
   <script>
-function humanizeText() {
-  const inputEl = document.getElementById("inputText");
-  const outputEl = document.getElementById("outputText");
-  const buttonEl = document.getElementById("humanizeBtn");
-  const spinnerEl = document.getElementById("loadingSpinner");
+    const humanizeBtn = document.getElementById("humanizeBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const inputText = document.getElementById("inputText");
+    const outputText = document.getElementById("outputText");
+    const loading = document.getElementById("loading");
+    const mode = document.getElementById("mode");
 
-  let text = inputEl.value.trim();
-  if (!text) {
-    alert("Please paste some text first!");
-    return;
-  }
-
-  // Lock UI
-  inputEl.disabled = true;
-  buttonEl.disabled = true;
-  spinnerEl.style.display = "inline-block";
-  outputEl.value = "";
-
-  setTimeout(() => {
-    // Step 1: contractions & casual replacements
-    text = text.replace(/\bdo not\b/gi, "don't")
-               .replace(/\bdoes not\b/gi, "doesn't")
-               .replace(/\bit is\b/gi, "it's")
-               .replace(/\bwe are\b/gi, "we're")
-               .replace(/\bthey are\b/gi, "they're");
-
-    // Step 2: strong synonym swaps
-    const synonyms = {
-      "important": ["crucial", "key", "vital", "big deal"],
-      "significant": ["notable", "meaningful", "major"],
-      "problem": ["issue", "challenge", "hurdle", "sticking point"],
-      "solution": ["fix", "answer", "way out"],
-      "benefit": ["advantage", "perk", "plus side"],
-      "example": ["case in point", "instance", "illustration"],
-      "show": ["highlight", "demonstrate", "point out", "reveal"]
-    };
-    for (let word in synonyms) {
-      let regex = new RegExp("\\b" + word + "\\b", "gi");
-      text = text.replace(regex, () => {
-        let arr = synonyms[word];
-        return arr[Math.floor(Math.random() * arr.length)];
-      });
+    // Utility functions
+    function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function shuffleSentence(sentence) {
+      let words = sentence.split(" ");
+      if (words.length > 6) {
+        const idx = Math.floor(Math.random() * words.length);
+        let word = words.splice(idx, 1)[0];
+        words.push(word);
+      }
+      return words.join(" ");
     }
 
-    // Step 3: sentence restructuring
-    let sentences = text.split(/([.!?])\s+/);
-    let rebuilt = [];
-    for (let i = 0; i < sentences.length; i += 2) {
-      let s = (sentences[i] || "").trim();
-      let punc = sentences[i+1] || "";
+    function humanizeText(text, modeType) {
+      let sentences = text.split(/(?<=[.!?])\s+/);
 
-      if (!s) continue;
+      return sentences.map(sentence => {
+        let s = sentence.trim();
 
-      // Randomly insert human-like connectors
-      if (Math.random() > 0.7) {
-        let fillers = ["To be fair,", "Frankly,", "You might say,", "Actually,"];
-        s = fillers[Math.floor(Math.random() * fillers.length)] + " " + s;
-      }
+        if (!s) return "";
 
-      // Sometimes split long sentences
-      let words = s.split(" ");
-      if (words.length > 18 && Math.random() > 0.5) {
-        let mid = Math.floor(words.length / 2);
-        rebuilt.push(words.slice(0, mid).join(" ") + ".");
-        rebuilt.push(words.slice(mid).join(" ") + punc);
-      } else {
-        rebuilt.push(s + punc);
-      }
+        if (modeType === "bypass") {
+          // Stronger changes
+          if (Math.random() > 0.5) s = shuffleSentence(s);
+          if (Math.random() > 0.7) s = "Interestingly, " + s;
+          if (Math.random() > 0.7) s += " — just like people would explain casually.";
+          return s;
+        }
+
+        if (modeType === "article") {
+          // Softer changes
+          if (Math.random() > 0.5) s = s.replace(" is ", " is actually ");
+          if (Math.random() > 0.6) s = s.replace("It ", "In fact, it ");
+          if (Math.random() > 0.6) s = s.replace("This ", "Interestingly, this ");
+          return s;
+        }
+
+        return s;
+      }).join(" ");
     }
 
-    // Step 4: paragraph restructuring
-    let finalText = rebuilt.join(" ").replace(/\s+/g, " ").trim();
-    let paras = finalText.split(/(?<=\.)\s+/);
-    let reshaped = [];
-    paras.forEach((p, idx) => {
-      if (p.length > 200 && Math.random() > 0.4) {
-        // break large paragraphs
-        let mid = Math.floor(p.length / 2);
-        reshaped.push(p.slice(0, mid));
-        reshaped.push(p.slice(mid));
-      } else {
-        reshaped.push(p);
+    // Button Events
+    humanizeBtn.addEventListener("click", () => {
+      const text = inputText.value.trim();
+      if (!text) {
+        alert("Please paste some text first!");
+        return;
       }
 
-      // add transitions
-      if (idx % 2 === 1 && Math.random() > 0.6) {
-        reshaped.push("Now, let’s shift focus a bit.");
-      }
+      // Disable while processing
+      humanizeBtn.disabled = true;
+      clearBtn.disabled = true;
+      inputText.disabled = true;
+      mode.disabled = true;
+      loading.style.display = "inline-block";
+
+      setTimeout(() => {
+        const modeType = mode.value;
+        const result = humanizeText(text, modeType);
+        outputText.value = result;
+
+        // Re-enable
+        humanizeBtn.disabled = false;
+        clearBtn.disabled = false;
+        inputText.disabled = false;
+        mode.disabled = false;
+        loading.style.display = "none";
+      }, 1200);
     });
 
-    // Step 5: short punchy endings
-    if (Math.random() > 0.5) reshaped.push("That’s the bottom line.");
-    if (Math.random() > 0.7) reshaped.push("Pretty straightforward, right?");
-
-    outputEl.value = reshaped.join("\n\n").trim();
-
-    // Unlock UI
-    inputEl.disabled = false;
-    buttonEl.disabled = false;
-    spinnerEl.style.display = "none";
-  }, 1500);
-}
-</script>
-
-
+    clearBtn.addEventListener("click", () => {
+      inputText.value = "";
+      outputText.value = "";
+    });
+  </script>
 </body>
 </html>
