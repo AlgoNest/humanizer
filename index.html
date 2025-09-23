@@ -17,21 +17,12 @@
   <div class="container">
     <div class="card p-4">
       <h2 class="mb-3 text-center fw-bold">📝 Humanize.org MVP</h2>
-      <p class="text-muted text-center">Make AI text more human-like. Choose <b>Bypass</b> or <b>Article</b> mode.</p>
+      <p class="text-muted text-center">Paste your AI-generated text and make it sound more natural.</p>
 
       <!-- Input -->
       <div class="mb-3">
         <label class="form-label fw-semibold">Paste Your AI Text</label>
         <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..."></textarea>
-      </div>
-
-      <!-- Mode Selection -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Mode</label>
-        <select id="mode" class="form-select">
-          <option value="bypass">Bypass Mode (for AI detection)</option>
-          <option value="article">Article Mode (for essays & blogs)</option>
-        </select>
       </div>
 
       <!-- Buttons -->
@@ -61,42 +52,45 @@
     const inputText = document.getElementById("inputText");
     const outputText = document.getElementById("outputText");
     const loading = document.getElementById("loading");
-    const mode = document.getElementById("mode");
 
-    // Utility functions
-    function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function shuffleSentence(sentence) {
-      let words = sentence.split(" ");
-      if (words.length > 6) {
-        const idx = Math.floor(Math.random() * words.length);
-        let word = words.splice(idx, 1)[0];
-        words.push(word);
-      }
-      return words.join(" ");
-    }
+    // Simple synonym dictionary
+    const synonyms = {
+      "utilize": "use",
+      "commence": "start",
+      "demonstrate": "show",
+      "assistance": "help",
+      "purchase": "buy",
+      "endeavor": "effort",
+      "objective": "goal",
+      "conclusion": "ending",
+      "numerous": "many",
+      "optimize": "improve",
+      "individuals": "people"
+    };
 
-    function humanizeText(text, modeType) {
+    // Humanizer Function
+    function humanizeText(text) {
       let sentences = text.split(/(?<=[.!?])\s+/);
 
-      return sentences.map(sentence => {
+      return sentences.map((sentence, index) => {
         let s = sentence.trim();
-
         if (!s) return "";
 
-        if (modeType === "bypass") {
-          // Stronger changes
-          if (Math.random() > 0.5) s = shuffleSentence(s);
-          if (Math.random() > 0.7) s = "Interestingly, " + s;
-          if (Math.random() > 0.7) s += " — just like people would explain casually.";
-          return s;
+        // Replace synonyms
+        for (let word in synonyms) {
+          const regex = new RegExp("\\b" + word + "\\b", "gi");
+          s = s.replace(regex, synonyms[word]);
         }
 
-        if (modeType === "article") {
-          // Softer changes
-          if (Math.random() > 0.5) s = s.replace(" is ", " is actually ");
-          if (Math.random() > 0.6) s = s.replace("It ", "In fact, it ");
-          if (Math.random() > 0.6) s = s.replace("This ", "Interestingly, this ");
-          return s;
+        // Add light casual fillers every few sentences
+        if (index % 4 === 0 && s.length > 30) {
+          const fillers = ["To be fair,", "In simple terms,", "You could say,", "Honestly,"];
+          s = fillers[Math.floor(Math.random() * fillers.length)] + " " + s;
+        }
+
+        // Slight variation
+        if (Math.random() > 0.7) {
+          s = s.replace(" is ", " is actually ");
         }
 
         return s;
@@ -115,21 +109,18 @@
       humanizeBtn.disabled = true;
       clearBtn.disabled = true;
       inputText.disabled = true;
-      mode.disabled = true;
       loading.style.display = "inline-block";
 
       setTimeout(() => {
-        const modeType = mode.value;
-        const result = humanizeText(text, modeType);
+        const result = humanizeText(text);
         outputText.value = result;
 
         // Re-enable
         humanizeBtn.disabled = false;
         clearBtn.disabled = false;
         inputText.disabled = false;
-        mode.disabled = false;
         loading.style.display = "none";
-      }, 1200);
+      }, 1000);
     });
 
     clearBtn.addEventListener("click", () => {
