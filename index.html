@@ -3,46 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Humanizer - Offline</title>
+  <title>AI Humanizer - Smart Offline</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background: #f8f9fa;
-    }
-    .container {
-      max-width: 900px;
-      margin-top: 50px;
-    }
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    textarea {
-      resize: none;
-      min-height: 200px;
-    }
+    body { background: #f8f9fa; }
+    .container { max-width: 900px; margin-top: 50px; }
+    .card { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    textarea { resize: none; min-height: 200px; }
     .btn-custom {
-      background: #4CAF50;
-      color: white;
-      border-radius: 25px;
-      padding: 10px 30px;
-      font-size: 18px;
-      font-weight: bold;
+      background: #4CAF50; color: white;
+      border-radius: 25px; padding: 10px 30px;
+      font-size: 18px; font-weight: bold;
     }
-    .btn-custom:hover {
-      background: #45a049;
-      color: white;
-    }
-    .spinner-border {
-      display: none;
-      margin-left: 10px;
-    }
+    .btn-custom:hover { background: #45a049; color: white; }
+    .spinner-border { display: none; margin-left: 10px; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card p-4">
-      <h2 class="text-center mb-4">AI Humanizer (Offline)</h2>
+      <h2 class="text-center mb-4">AI Humanizer (Offline Smart Mode)</h2>
       
       <!-- Input Section -->
       <label for="inputText" class="form-label">Paste your AI text here:</label>
@@ -62,6 +42,17 @@
   </div>
 
   <script>
+    function shuffleSentences(paragraph) {
+      let sentences = paragraph.match(/[^.!?]+[.!?]/g) || [paragraph];
+      if (sentences.length > 3) {
+        // swap middle sentences randomly
+        let i = 1 + Math.floor(Math.random() * (sentences.length - 2));
+        let j = 1 + Math.floor(Math.random() * (sentences.length - 2));
+        [sentences[i], sentences[j]] = [sentences[j], sentences[i]];
+      }
+      return sentences.join(" ");
+    }
+
     function humanizeText() {
       const inputEl = document.getElementById("inputText");
       const outputEl = document.getElementById("outputText");
@@ -88,19 +79,15 @@
                    .replace(/\bthey are\b/gi, "they're")
                    .replace(/\bwe are\b/gi, "we're");
 
-        // Step 2: break long sentences
-        text = text.replace(/, and/g, ". And")
-                   .replace(/; however,/gi, ". However,");
-
-        // Step 3: synonym/phrase replacement with randomness
+        // Step 2: synonyms + phrase swaps
         const replacements = {
           "moreover": ["also", "what’s more", "on top of that"],
           "therefore": ["so", "which means", "as a result"],
           "artificial intelligence": ["AI", "machine intelligence", "smart systems"],
           "in conclusion": ["to sum up", "overall", "all things considered"],
-          "utilize": ["use", "make use of", "take advantage of"]
+          "utilize": ["use", "make use of", "take advantage of"],
+          "demonstrates": ["shows", "highlights", "makes clear"]
         };
-
         for (let word in replacements) {
           let options = replacements[word];
           let regex = new RegExp("\\b" + word + "\\b", "gi");
@@ -109,23 +96,40 @@
           });
         }
 
-        // Step 4: occasional filler / casual touch
+        // Step 3: break long paragraphs into smaller chunks
+        let paragraphs = text.split(/\n+/).map(p => p.trim()).filter(p => p);
+        let newParagraphs = [];
+        for (let p of paragraphs) {
+          // apply mild sentence shuffle
+          p = shuffleSentences(p);
+
+          if (p.length > 300) {
+            let mid = Math.floor(p.length / 2);
+            let cut = p.indexOf(".", mid);
+            if (cut !== -1) {
+              newParagraphs.push(p.slice(0, cut+1));
+              newParagraphs.push(p.slice(cut+1));
+              continue;
+            }
+          }
+          newParagraphs.push(p);
+        }
+
+        // Step 4: optional filler / casual tone
+        let finalText = newParagraphs.join("\n\n");
         if (Math.random() > 0.6) {
-          text = "Well, " + text;
+          finalText = "Honestly, " + finalText;
         }
         if (Math.random() > 0.7) {
-          text += " You see, that's kind of how it works.";
+          finalText += " You know, that's kind of the gist of it.";
         }
 
-        // Step 5: vary sentence style (short bursts)
-        text = text.replace(/([^.]{80,}?)\./g, "$1. ").replace(/\s+/g, " ");
-
-        // Unlock + show result
-        outputEl.value = text;
+        // Step 5: output clean text
+        outputEl.value = finalText.trim();
         inputEl.disabled = false;
         buttonEl.disabled = false;
         spinnerEl.style.display = "none";
-      }, 1200); // simulate processing delay
+      }, 1300); // simulate processing
     }
   </script>
 </body>
