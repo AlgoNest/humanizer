@@ -2,154 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AI Text Humanizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Humanizer - Offline</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      transition: background 0.3s, color 0.3s;
+      background: #f8f9fa;
     }
     .container {
-      width: 90%;
-      max-width: 700px;
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      text-align: center;
-      transition: background 0.3s;
+      max-width: 900px;
+      margin-top: 50px;
     }
-    h1 {
-      margin-bottom: 10px;
-      font-size: 28px;
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     textarea {
-      width: 100%;
-      height: 160px;
-      margin: 15px 0;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
       resize: none;
-      font-size: 16px;
-      transition: border 0.3s;
+      min-height: 200px;
     }
-    textarea:focus {
-      border: 1px solid #4cafef;
-      outline: none;
-    }
-    .btn {
-      padding: 12px 20px;
-      margin: 8px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background: #4cafef;
+    .btn-custom {
+      background: #4CAF50;
       color: white;
-      font-weight: bold;
-      font-size: 15px;
-      transition: background 0.3s, transform 0.2s;
-    }
-    .btn:hover {
-      background: #2196f3;
-      transform: scale(1.05);
-    }
-    .output-box {
-      background: #f9f9f9;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: left;
-      min-height: 100px;
-      font-size: 16px;
-      white-space: pre-wrap;
-    }
-    .word-count {
-      font-size: 14px;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      color: #666;
-    }
-    .theme-toggle {
-      margin-top: 15px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #4cafef;
+      border-radius: 25px;
+      padding: 10px 30px;
+      font-size: 18px;
       font-weight: bold;
     }
-    /* Dark Mode */
-    body.dark {
-      background: #1e1e1e;
-      color: #eee;
+    .btn-custom:hover {
+      background: #45a049;
+      color: white;
     }
-    body.dark .container {
-      background: #2b2b2b;
-    }
-    body.dark textarea {
-      background: #1e1e1e;
-      color: #eee;
-      border: 1px solid #555;
-    }
-    body.dark .output-box {
-      background: #1e1e1e;
-      color: #eee;
+    .spinner-border {
+      display: none;
+      margin-left: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>AI Text Humanizer ✨</h1>
-    <p>Make AI-generated text sound natural & human-like.</p>
+    <div class="card p-4">
+      <h2 class="text-center mb-4">AI Humanizer (Offline)</h2>
+      
+      <!-- Input Section -->
+      <label for="inputText" class="form-label">Paste your AI text here:</label>
+      <textarea id="inputText" class="form-control mb-3" placeholder="Paste AI-generated text here..."></textarea>
 
-    <textarea id="inputText" placeholder="Paste AI text here..."></textarea>
-    <div class="word-count" id="wordCount">0 words</div>
+      <div class="text-center">
+        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize</button>
+        <div id="loadingSpinner" class="spinner-border text-success" role="status"></div>
+      </div>
 
-    <button class="btn" onclick="humanizeText()">Humanize</button>
-    <button class="btn" onclick="copyOutput()">Copy Output</button>
-
-    <div class="output-box" id="outputText">Your humanized text will appear here...</div>
-
-    <div class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Dark Mode</div>
+      <!-- Output Section -->
+      <div class="mt-4">
+        <label for="outputText" class="form-label">Humanized Text:</label>
+        <textarea id="outputText" class="form-control" placeholder="Your humanized text will appear here..." readonly></textarea>
+      </div>
+    </div>
   </div>
 
   <script>
-    const inputText = document.getElementById("inputText");
-    const wordCount = document.getElementById("wordCount");
-    const outputText = document.getElementById("outputText");
-
-    inputText.addEventListener("input", () => {
-      let words = inputText.value.trim().split(/\s+/).filter(Boolean);
-      wordCount.textContent = words.length + " words";
-    });
-
     function humanizeText() {
-      let text = inputText.value;
+      const inputEl = document.getElementById("inputText");
+      const outputEl = document.getElementById("outputText");
+      const buttonEl = document.getElementById("humanizeBtn");
+      const spinnerEl = document.getElementById("loadingSpinner");
 
-      // Simple transformation for demo
-      let humanized = text
-        .replace(/AI/gi, "smart system")
-        .replace(/\butilize\b/g, "use")
-        .replace(/\btherefore\b/g, "so")
-        .replace(/\bmoreover\b/g, "also");
+      let text = inputEl.value.trim();
+      if (!text) {
+        alert("Please paste some text first!");
+        return;
+      }
 
-      outputText.textContent = humanized || "⚡ Please enter some text!";
-    }
+      // Lock input + show spinner
+      inputEl.disabled = true;
+      buttonEl.disabled = true;
+      spinnerEl.style.display = "inline-block";
+      outputEl.value = "";
 
-    function copyOutput() {
-      navigator.clipboard.writeText(outputText.textContent);
-      alert("✅ Text copied to clipboard!");
-    }
+      setTimeout(() => {
+        // Step 1: contractions
+        text = text.replace(/\bdo not\b/gi, "don't")
+                   .replace(/\bcan not\b/gi, "can't")
+                   .replace(/\bit is\b/gi, "it's")
+                   .replace(/\bthey are\b/gi, "they're")
+                   .replace(/\bwe are\b/gi, "we're");
 
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
+        // Step 2: break long sentences
+        text = text.replace(/, and/g, ". And")
+                   .replace(/; however,/gi, ". However,");
+
+        // Step 3: synonym/phrase replacement with randomness
+        const replacements = {
+          "moreover": ["also", "what’s more", "on top of that"],
+          "therefore": ["so", "which means", "as a result"],
+          "artificial intelligence": ["AI", "machine intelligence", "smart systems"],
+          "in conclusion": ["to sum up", "overall", "all things considered"],
+          "utilize": ["use", "make use of", "take advantage of"]
+        };
+
+        for (let word in replacements) {
+          let options = replacements[word];
+          let regex = new RegExp("\\b" + word + "\\b", "gi");
+          text = text.replace(regex, () => {
+            return options[Math.floor(Math.random() * options.length)];
+          });
+        }
+
+        // Step 4: occasional filler / casual touch
+        if (Math.random() > 0.6) {
+          text = "Well, " + text;
+        }
+        if (Math.random() > 0.7) {
+          text += " You see, that's kind of how it works.";
+        }
+
+        // Step 5: vary sentence style (short bursts)
+        text = text.replace(/([^.]{80,}?)\./g, "$1. ").replace(/\s+/g, " ");
+
+        // Unlock + show result
+        outputEl.value = text;
+        inputEl.disabled = false;
+        buttonEl.disabled = false;
+        spinnerEl.style.display = "none";
+      }, 1200); // simulate processing delay
     }
   </script>
 </body>
