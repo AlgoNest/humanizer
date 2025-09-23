@@ -1,283 +1,108 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Humanize.org — Minimal MVP</title>
-  <!-- Bootstrap 5 CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Humanizer - MVP</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #198754cf;
-    }
-    .brand-area {
-      text-align: center;
-      padding: 14px 0;
-    }
-    .brand-area .brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-    .brand-area .tagline {
-      font-size: .9rem;
-      color: #6c757d;
-    }
-    .card + .card { margin-top: 1rem; }
+    body { background: #f8f9fa; }
+    .container { max-width: 900px; margin-top: 50px; }
+    .card { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    textarea { resize: none; min-height: 180px; }
+    .btn-custom { background: #4CAF50; color: white; border-radius: 25px; padding: 10px 25px; font-size: 16px; font-weight: bold; }
+    .btn-custom:hover { background: #45a049; color: white; }
+    .spinner-border { width: 2rem; height: 2rem; display: none; }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="card p-4">
+      <h2 class="text-center mb-4">AI Humanizer</h2>
+      
+      <!-- Input -->
+      <label for="inputText" class="form-label">Paste your AI text here:</label>
+      <textarea id="inputText" class="form-control mb-2" placeholder="Paste AI-generated text here..."></textarea>
+      <p id="wordCount" class="text-muted">Word Count: 0</p>
 
-<nav class="navbar navbar-light bg-light border-bottom">
-  <div class="container-fluid justify-content-center text-center brand-area">
-    <div class="brand-area">
-      <span class="brand mb-0 d-block">Humanize.org</span>
-      <span class="tagline">Make your text sound human in one click.</span>
-    </div>
-  </div>
-</nav>
+      <!-- Buttons -->
+      <div class="d-flex justify-content-center align-items-center gap-3">
+        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize</button>
+        <button class="btn btn-secondary" onclick="clearText()">Clear</button>
+        <button class="btn btn-primary" onclick="copyText()">Copy</button>
+        <div class="spinner-border text-success" role="status" id="spinner"></div>
+      </div>
 
-<main class="container my-4">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold mb-1">Enhance your writing in seconds</h2>
-    <p class="text-muted">A lightweight, client-side tool. No signups, no servers — just results in your browser.</p>
-  </div>
-
-  <!-- Input Section -->
-  <div class="row mb-3">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <label for="inputText" class="form-label mb-0">Input</label>
-            <span id="wordCountInput" class="text-muted small">Words: 0 / 2000</span>
-          </div>
-          <textarea id="inputText" class="form-control" rows="8" placeholder="Paste your text here…"></textarea>
-        </div>
+      <!-- Output -->
+      <div class="mt-4">
+        <label for="outputText" class="form-label">Humanized Text:</label>
+        <textarea id="outputText" class="form-control" placeholder="Your humanized text will appear here..." readonly></textarea>
       </div>
     </div>
   </div>
 
-  <!-- Action Buttons -->
-  <div class="row mb-3">
-    <div class="col text-center">
-      <button id="btnHumanize" class="btn btn-primary btn-lg me-2" type="button">Humanize Text</button>
-      <button id="btnClear" class="btn btn-outline-secondary btn-lg" type="button">Clear</button>
-    </div>
-  </div>
+  <script src="https://js.puter.com/v2/"></script>
+  <script>
+    const inputText = document.getElementById("inputText");
+    const outputText = document.getElementById("outputText");
+    const spinner = document.getElementById("spinner");
+    const wordCount = document.getElementById("wordCount");
+    const humanizeBtn = document.getElementById("humanizeBtn");
 
-  <!-- Spinner -->
-  <div id="spinnerRow" class="row justify-content-center d-none mb-3">
-    <div class="col-auto d-flex align-items-center">
-      <div class="spinner-border text-primary" role="status" aria-label="Processing"></div>
-      <span class="ms-2 text-dark">Processing…</span>
-    </div>
-  </div>
-
-  <!-- Output Section -->
-  <div class="row g-3">
-    <div class="col-12">
-      <div class="card" aria-live="polite">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="card-title mb-0">Humanized Text</h5>
-            <button id="btnCopy" class="btn btn-outline-secondary btn-sm" type="button">Copy</button>
-          </div>
-          <textarea id="outputText" class="form-control" rows="8" placeholder="Your humanized text will appear here…" readonly></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-<!-- Bootstrap 5 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const input = document.getElementById('inputText');
-  const output = document.getElementById('outputText');
-  const btnHumanize = document.getElementById('btnHumanize');
-  const btnClear = document.getElementById('btnClear');
-  const btnCopy = document.getElementById('btnCopy');
-  const spinnerRow = document.getElementById('spinnerRow');
-  const wordCountInput = document.getElementById('wordCountInput');
-  const maxWords = 2000;
-
-  function countWords(text) {
-    if (!text) return 0;
-    return text.trim().length === 0 ? 0 : text.trim().split(/\s+/).length;
-  }
-
-  function updateWordCount() {
-    const w = countWords(input.value);
-    wordCountInput.textContent = 'Words: ' + w + ' / ' + maxWords;
-  }
-
-  input.addEventListener('input', updateWordCount);
-  updateWordCount();
-
-  function showSpinner(show) {
-    spinnerRow.classList.toggle('d-none', !show);
-  }
-
-  function clampWords(text) {
-    const w = countWords(text);
-    if (w <= maxWords) return text;
-    const tokens = text.trim().split(/\s+/).slice(0, maxWords);
-    return tokens.join(' ');
-  }
-
-  function humanizeText(text) {
-    if (!text) return '';
-
-    let t = text;
-
-    // Contractions
-    const contractions = [
-      {re: /\bdo\s+not\b/gi, rep: "don't"},
-      {re: /\bdoes\s+not\b/gi, rep: "doesn't"},
-      {re: /\bcan\s+not\b/gi, rep: "can't"},
-      {re: /\bcannot\b/gi, rep: "can't"},
-      {re: /\bit\s+is\b/gi, rep: "it's"},
-      {re: /\bi\s+am\b/gi, rep: "I'm"},
-      {re: /\bwe\s+are\b/gi, rep: "we're"},
-      {re: /\byou\s+are\b/gi, rep: "you're"},
-      {re: /\bthey\s+are\b/gi, rep: "they're"},
-      {re: /\bthat\s+is\b/gi, rep: "that's"},
-      {re: /\bis\s+there\b/gi, rep: "there's"},
-    ];
-    contractions.forEach(c => { t = t.replace(c.re, c.rep); });
-
-    // Casual phrases
-    const phrases = {
-      "therefore": "so",
-      "therefore,": "so,",
-      "henceforth": "from now on",
-      "thus": "so",
-      "thereby": "so",
-      "consequently": "so",
-      "accordingly": "so",
-      "however": "but",
-      "nevertheless": "but",
-    };
-    Object.entries(phrases).forEach(([key, val]) => {
-      const re = new RegExp("\\b" + key.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&") + "\\b", "gi");
-      t = t.replace(re, val);
+    // Update word count live
+    inputText.addEventListener("input", () => {
+      let count = inputText.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+      wordCount.textContent = "Word Count: " + count;
     });
 
-    // Synonyms randomization
-    const synonyms = {
-      "good": ["great","awesome","nice","solid","excellent"],
-      "bad": ["poor","awful","not great","subpar"],
-      "quick": ["fast","rapid","swift","speedy"],
-      "slow": ["sluggish","lethargic","gradual"],
-      "easy": ["simple","straightforward","effortless"],
-      "hard": ["difficult","tough","challenging"],
-      "small": ["tiny","little","compact"],
-      "big": ["large","huge","vast"],
-      "happy": ["glad","pleased","cheerful"],
-      "sad": ["down","unhappy","melancholy"],
-    };
-    Object.keys(synonyms).forEach(key => {
-      const arr = synonyms[key];
-      const re = new RegExp("\\b" + key + "\\b", "gi");
-      t = t.replace(re, function(match) {
-        const repl = arr[Math.floor(Math.random() * arr.length)];
-        // preserve capitalization
-        if (match.charAt(0) === match.charAt(0).toUpperCase()) {
-          return repl.charAt(0).toUpperCase() + repl.slice(1);
-        }
-        return repl;
-      });
-    });
+    // Clear input/output
+    function clearText() {
+      inputText.value = "";
+      outputText.value = "";
+      wordCount.textContent = "Word Count: 0";
+    }
 
-    // Variation: split long sentences
-    const sentences = t.split(/([.!?])\s+/);
-    let rebuilt = [];
-    for (let i = 0; i < sentences.length; i++) {
-      const part = sentences[i];
-      // keep delimiters intact
-      if (i % 2 === 0) {
-        // text
-        rebuilt.push(part);
-      } else {
-        // punctuation
-        rebuilt.push(part);
+    // Copy output
+    function copyText() {
+      if (outputText.value.trim() === "") {
+        alert("No text to copy!");
+        return;
       }
-    }
-    t = rebuilt.join(' ').trim();
-
-    // Optional split of very long sentences to vary length
-    const frag = t.split(/[.!?]+\s+/);
-    if (frag.length > 1) {
-      const newParts = [];
-      frag.forEach(s => {
-        const w = s.trim().split(/\s+/).length;
-        if (w > 20 && Math.random() < 0.25) {
-          const words = s.trim().split(/\s+/);
-          const mid = Math.floor(words.length / 2);
-          const first = words.slice(0, mid).join(' ');
-          const second = words.slice(mid).join(' ');
-          if (first) newParts.push(first + '.');
-          if (second) newParts.push(second);
-        } else {
-          if (s.trim()) newParts.push(s.trim());
-        }
-      });
-      t = newParts.join('. ');
-      t = t.replace(/\s+([.!?])/g, '$1');
+      outputText.select();
+      document.execCommand("copy");
+      alert("Humanized text copied!");
     }
 
-    // Normalize whitespace
-    t = t.replace(/\s+/g, ' ').trim();
+    // Humanize function
+    async function humanizeText() {
+      const text = inputText.value.trim();
+      if (!text) {
+        alert("Please paste some text first!");
+        return;
+      }
 
-    return t;
-  }
+      // Disable UI
+      spinner.style.display = "inline-block";
+      humanizeBtn.disabled = true;
+      inputText.disabled = true;
 
-  btnHumanize.addEventListener('click', function() {
-    const raw = input.value;
-    const clamped = clampWords(raw);
-    if (countWords(raw) > maxWords) {
-      alert('Input exceeds the maximum of ' + maxWords + ' words. Extra text has been trimmed.');
+      try {
+        const response = await puter.ai.chat(
+          `Rewrite the following text to make it appear as if written by a human, adding natural variation, contractions, and informal flow. Do not explain, only return the rewritten text:\n\n${text}`,
+          { model: "gpt-5-nano" }
+        );
+
+        outputText.value = response;
+      } catch (err) {
+        console.error(err);
+        alert("Error processing text. Try again!");
+      }
+
+      // Re-enable UI
+      spinner.style.display = "none";
+      humanizeBtn.disabled = false;
+      inputText.disabled = false;
     }
-    showSpinner(true);
-    output.value = '';
-    setTimeout(function() {
-      const result = humanizeText(clamped);
-      output.value = result;
-      showSpinner(false);
-    }, 350);
-  });
-
-  btnClear.addEventListener('click', function() {
-    input.value = '';
-    output.value = '';
-    updateWordCount();
-  });
-
-  btnCopy.addEventListener('click', function() {
-    const text = output.value;
-    if (!text) return;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function() {
-        btnCopy.textContent = 'Copied';
-        setTimeout(function() { btnCopy.textContent = 'Copy'; }, 1200);
-      });
-    } else {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      btnCopy.textContent = 'Copied';
-      setTimeout(function() { btnCopy.textContent = 'Copy'; }, 1200);
-    }
-  });
-
-  updateWordCount();
-});
-</script>
-
+  </script>
 </body>
 </html>
