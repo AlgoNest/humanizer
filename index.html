@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Humanizer - MVP</title>
+  <title>Offline AI Humanizer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background: #f8f9fa; }
@@ -12,13 +12,12 @@
     textarea { resize: none; min-height: 180px; }
     .btn-custom { background: #4CAF50; color: white; border-radius: 25px; padding: 10px 25px; font-size: 16px; font-weight: bold; }
     .btn-custom:hover { background: #45a049; color: white; }
-    .spinner-border { width: 2rem; height: 2rem; display: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card p-4">
-      <h2 class="text-center mb-4">AI Humanizer</h2>
+      <h2 class="text-center mb-4">Offline Humanizer</h2>
       
       <!-- Input -->
       <label for="inputText" class="form-label">Paste your AI text here:</label>
@@ -27,11 +26,9 @@
 
       <!-- Buttons -->
       <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
-        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize (AI)</button>
-        <button id="fallbackBtn" class="btn btn-warning" onclick="fallbackHumanizer()">Humanize (Offline)</button>
+        <button class="btn btn-custom" onclick="fallbackHumanizer()">Humanize</button>
         <button class="btn btn-secondary" onclick="clearText()">Clear</button>
         <button class="btn btn-primary" onclick="copyText()">Copy</button>
-        <div class="spinner-border text-success" role="status" id="spinner"></div>
       </div>
 
       <!-- Output -->
@@ -42,13 +39,10 @@
     </div>
   </div>
 
-  <script src="https://js.puter.com/v2/"></script>
   <script>
     const inputText = document.getElementById("inputText");
     const outputText = document.getElementById("outputText");
-    const spinner = document.getElementById("spinner");
     const wordCount = document.getElementById("wordCount");
-    const humanizeBtn = document.getElementById("humanizeBtn");
 
     // Update word count
     inputText.addEventListener("input", () => {
@@ -74,35 +68,7 @@
       alert("Humanized text copied!");
     }
 
-    // AI Humanizer (via Puter.js)
-    async function humanizeText() {
-      const text = inputText.value.trim();
-      if (!text) {
-        alert("Please paste some text first!");
-        return;
-      }
-
-      spinner.style.display = "inline-block";
-      humanizeBtn.disabled = true;
-      inputText.disabled = true;
-
-      try {
-        const response = await puter.ai.chat(
-          `Rewrite the following text to make it appear as if written by a human. Add natural variation, contractions, informal flow, and avoid robotic consistency. Return only the rewritten text:\n\n${text}`,
-          { model: "gpt-5-nano" }
-        );
-        outputText.value = response;
-      } catch (err) {
-        console.error(err);
-        alert("Error with AI humanizer. Try offline mode!");
-      }
-
-      spinner.style.display = "none";
-      humanizeBtn.disabled = false;
-      inputText.disabled = false;
-    }
-
-    // Offline Fallback Humanizer (JS only)
+    // Offline Humanizer
     function fallbackHumanizer() {
       const text = inputText.value.trim();
       if (!text) {
@@ -112,7 +78,7 @@
 
       let sentences = text.split(/([.?!])\s+/).map(s => s.trim()).filter(s => s.length > 0);
 
-      // Common contractions
+      // Contractions
       const contractions = {
         "do not": "don’t", "cannot": "can’t", "is not": "isn’t",
         "will not": "won’t", "I am": "I’m", "they are": "they’re",
@@ -125,19 +91,19 @@
       let humanized = sentences.map((s, i) => {
         let sentence = s;
 
-        // Randomly add contractions
+        // Random contractions
         for (let key in contractions) {
           if (sentence.toLowerCase().includes(key) && Math.random() > 0.5) {
             sentence = sentence.replace(new RegExp(key, "gi"), contractions[key]);
           }
         }
 
-        // Add filler word sometimes
-        if (Math.random() > 0.6) {
+        // Add filler words sometimes
+        if (Math.random() > 0.65) {
           sentence = fillers[Math.floor(Math.random() * fillers.length)] + ", " + sentence;
         }
 
-        // Shorten overly long sentences
+        // Shorten very long sentences
         if (sentence.split(" ").length > 20) {
           let parts = sentence.split(",");
           if (parts.length > 1) {
