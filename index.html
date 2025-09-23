@@ -18,7 +18,7 @@
   <div class="container">
     <div class="card p-4">
       <h2 class="mb-3 text-center fw-bold">📝 Humanize.org MVP</h2>
-      <p class="text-muted text-center">Paste your AI text and adjust the <b>strength</b> for humanization.</p>
+      <p class="text-muted text-center">Paste your AI text, adjust <b>strength</b>, and choose if you want <b>paragraph splitting</b>.</p>
 
       <!-- Input -->
       <div class="mb-3">
@@ -30,6 +30,14 @@
       <div class="mb-3">
         <label for="strength" class="form-label strength-label">Humanization Strength: <span id="strengthValue">50</span>%</label>
         <input type="range" class="form-range" min="0" max="100" value="50" id="strength">
+      </div>
+
+      <!-- Paragraph Split Toggle -->
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="splitToggle" checked>
+        <label class="form-check-label" for="splitToggle">
+          Split long text into human-like paragraphs
+        </label>
       </div>
 
       <!-- Buttons -->
@@ -54,96 +62,97 @@
   </div>
 
   <script>
-  const humanizeBtn = document.getElementById("humanizeBtn");
-  const clearBtn = document.getElementById("clearBtn");
-  const inputText = document.getElementById("inputText");
-  const outputText = document.getElementById("outputText");
-  const loading = document.getElementById("loading");
-  const mode = document.getElementById("mode");
+    const humanizeBtn = document.getElementById("humanizeBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const inputText = document.getElementById("inputText");
+    const outputText = document.getElementById("outputText");
+    const loading = document.getElementById("loading");
+    const strengthSlider = document.getElementById("strength");
+    const strengthValue = document.getElementById("strengthValue");
+    const splitToggle = document.getElementById("splitToggle");
 
-  // Utility functions
-  function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-  function shuffleSentence(sentence) {
-    let words = sentence.split(" ");
-    if (words.length > 6) {
-      const idx = Math.floor(Math.random() * words.length);
-      let word = words.splice(idx, 1)[0];
-      words.push(word);
-    }
-    return words.join(" ");
-  }
-
-  // Humanizer with paragraph splitting
-  function humanizeText(text, modeType) {
-    let sentences = text.split(/(?<=[.!?])\s+/);
-
-    let processed = sentences.map(sentence => {
-      let s = sentence.trim();
-      if (!s) return "";
-
-      if (modeType === "bypass") {
-        if (Math.random() > 0.5) s = shuffleSentence(s);
-        if (Math.random() > 0.7) s = "Interestingly, " + s;
-        if (Math.random() > 0.7) s += " — just like people would explain casually.";
-        return s;
-      }
-
-      if (modeType === "article") {
-        if (Math.random() > 0.5) s = s.replace(" is ", " is actually ");
-        if (Math.random() > 0.6) s = s.replace("It ", "In fact, it ");
-        if (Math.random() > 0.6) s = s.replace("This ", "Interestingly, this ");
-        return s;
-      }
-
-      return s;
+    // Update strength display
+    strengthSlider.addEventListener("input", () => {
+      strengthValue.textContent = strengthSlider.value;
     });
 
-    // 🔹 Paragraph splitting: group 2–4 sentences per paragraph
-    let paragraphs = [];
-    let temp = [];
-    processed.forEach((s, i) => {
-      temp.push(s);
-      if (temp.length >= 2 && (Math.random() > 0.5 || i === processed.length - 1)) {
-        paragraphs.push(temp.join(" "));
-        temp = [];
+    // Utility functions
+    function shuffleSentence(sentence) {
+      let words = sentence.split(" ");
+      if (words.length > 6) {
+        const idx = Math.floor(Math.random() * words.length);
+        let word = words.splice(idx, 1)[0];
+        words.push(word);
       }
-    });
-
-    return paragraphs.join("\n\n"); // double new line for paragraph breaks
-  }
-
-  // Button Events
-  humanizeBtn.addEventListener("click", () => {
-    const text = inputText.value.trim();
-    if (!text) {
-      alert("Please paste some text first!");
-      return;
+      return words.join(" ");
     }
 
-    humanizeBtn.disabled = true;
-    clearBtn.disabled = true;
-    inputText.disabled = true;
-    mode.disabled = true;
-    loading.style.display = "inline-block";
+    function humanizeText(text, strength, splitParagraphs) {
+      let sentences = text.split(/(?<=[.!?])\s+/);
+      let processed = sentences.map(sentence => {
+        let s = sentence.trim();
+        if (!s) return "";
 
-    setTimeout(() => {
-      const modeType = mode.value;
-      const result = humanizeText(text, modeType);
-      outputText.value = result;
+        // apply changes based on strength
+        if (Math.random() * 100 < strength) s = shuffleSentence(s);
+        if (Math.random() * 100 < strength / 2) s = "Interestingly, " + s;
+        if (Math.random() * 100 < strength / 2) s += " — just like people might casually explain.";
+        if (Math.random() * 100 < strength / 3) s = s.replace(/\bis\b/g, " is actually");
 
-      humanizeBtn.disabled = false;
-      clearBtn.disabled = false;
-      inputText.disabled = false;
-      mode.disabled = false;
-      loading.style.display = "none";
-    }, 1200);
-  });
+        return s;
+      });
 
-  clearBtn.addEventListener("click", () => {
-    inputText.value = "";
-    outputText.value = "";
-  });
-</script>
+      if (!splitParagraphs) return processed.join(" ");
 
+      // Group into paragraphs (2–4 sentences)
+      let paragraphs = [];
+      let temp = [];
+      processed.forEach((s, i) => {
+        temp.push(s);
+        if (temp.length >= 2 && (Math.random() > 0.5 || i === processed.length - 1)) {
+          paragraphs.push(temp.join(" "));
+          temp = [];
+        }
+      });
+      return paragraphs.join("\n\n");
+    }
+
+    // Button Events
+    humanizeBtn.addEventListener("click", () => {
+      const text = inputText.value.trim();
+      if (!text) {
+        alert("Please paste some text first!");
+        return;
+      }
+
+      // Disable while processing
+      humanizeBtn.disabled = true;
+      clearBtn.disabled = true;
+      inputText.disabled = true;
+      strengthSlider.disabled = true;
+      splitToggle.disabled = true;
+      loading.style.display = "inline-block";
+
+      setTimeout(() => {
+        const strength = parseInt(strengthSlider.value);
+        const split = splitToggle.checked;
+        const result = humanizeText(text, strength, split);
+        outputText.value = result;
+
+        // Re-enable
+        humanizeBtn.disabled = false;
+        clearBtn.disabled = false;
+        inputText.disabled = false;
+        strengthSlider.disabled = false;
+        splitToggle.disabled = false;
+        loading.style.display = "none";
+      }, 1200);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      inputText.value = "";
+      outputText.value = "";
+    });
+  </script>
 </body>
 </html>
