@@ -1,53 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Humanize</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Humanize Text Tool — Free AI Text Humanizer (Preserve Meaning Mode)</title>
+  
+  <!-- Meta SEO -->
+  <meta name="description" content="Free AI text humanizer tool — instantly make AI-generated text sound more natural, human-like, and readable while preserving meaning. NO Credit card, Free of cost No signup, no server, 100% free.">
+  <meta name="keywords" content="AI text humanizer, humanize text, rewrite AI text, make AI text human, bypass AI detection, free tool, linkedin post, grammary rewriter, linkedin post writer, copy writting, Humanize, humanize">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://humanizer-chir.vercel.app/" />
+
+  <!-- Open Graph (Facebook/LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Humanize Text Tool — Free AI Text Humanizer">
+  <meta property="og:description" content="Transform AI-generated text into human-like writing while preserving meaning. Free, no signup required.">
+  <meta property="og:url" content="https://yourdomain.com/humanize">
+  <meta property="og:image" content="https://humanizer-chir.vercel.app/og-image.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Humanize Text Tool — Preserve Meaning Mode">
+  <meta name="twitter:description" content="Make AI-generated text sound human and natural, 100% free and offline.">
+  <meta name="twitter:image" content="https://humanizer-chir.vercel.app/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://humanizer-chir.vercel.app/favicon.png">
+
+  <!-- Preload & Bootstrap -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Humanize Text Tool",
+    "url": "https://humanizer-chir.vercel.app/",
+    "applicationCategory": "Utility",
+    "operatingSystem": "All",
+    "description": "Free AI text humanizer tool — instantly make AI-generated text sound more natural, human-like, and readable while preserving meaning. NO Credit card, Free of cost No signup, no server, 100% free.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
   <style>
     body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-    .container { max-width: 900px; margin-top: 40px; }
+    main.container { max-width: 900px; margin-top: 40px; }
     .card { border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     textarea { resize: none; }
-    .spinner-border { display: none; }
-    .strength-label { font-weight: 600; }
+    .progress { height: 8px; display: none; }
+    .stats { font-size: 14px; color: #6c757d; }
+    .badge-fixed { display: inline-block; margin-top: 8px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card p-4">
-      <h2 class="mb-3 text-center fw-bold">📝 Humanize</h2>
-      <p class="text-muted text-center">No signup, No credit card, No server, <b>100% Free</b></p>
+  <main class="container">
+    <article class="card p-4" itemscope itemtype="https://schema.org/SoftwareApplication">
+      <h1 class="mb-1 text-center fw-bold" itemprop="name">📝 Humanize Text Tool</h1>
+      <p class="text-muted text-center mb-1" itemprop="description">
+        No signup, No server — <b>100% Free</b>. Transform AI text into human-like writing instantly.
+      </p>
+      <div class="text-center">
+        <span class="badge bg-success badge-fixed">✅ Preserve Meaning Mode (always ON)</span>
+      </div>
 
       <!-- Input -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Paste Your AI Text</label>
-        <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..."></textarea>
-      </div>
+      <section class="mb-3 mt-3">
+        <label for="inputText" class="form-label fw-semibold">Paste Your AI Text</label>
+        <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..." aria-label="Input AI text"></textarea>
+      </section>
 
       <!-- Strength Slider -->
-      <div class="mb-3">
-        <label for="strength" class="form-label strength-label">Humanization Strength: <span id="strengthValue">50</span>%</label>
-        <input type="range" class="form-range" min="0" max="100" value="50" id="strength">
-      </div>
+      <section class="mb-3">
+        <label for="strength" class="form-label fw-semibold">Humanization Strength:
+          <span id="strengthValue">50</span>%
+        </label>
+        <input type="range" class="form-range" min="0" max="100" value="50" id="strength" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"/>
+      </section>
 
       <!-- Purpose Dropdown -->
-      <div class="mb-3">
+      <section class="mb-3">
         <label for="purpose" class="form-label fw-semibold">Purpose of Text</label>
-        <select id="purpose" class="form-select">
+        <select id="purpose" class="form-select" aria-label="Purpose of text">
           <option value="article">📰 Article / Essay</option>
           <option value="blog">✍️ Blog Post</option>
           <option value="social">📱 Social Media Post</option>
-          <option value="copy">💡 Copywriting / Ads</option>
+          <option value="copy">💡 Copywriting / Ad</option>
           <option value="academic">📚 Academic Writing</option>
           <option value="story">📖 Storytelling / Creative</option>
         </select>
-      </div>
+      </section>
 
       <!-- Paragraph Split Toggle -->
       <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="splitToggle" checked>
+        <input class="form-check-input" type="checkbox" id="splitToggle" checked aria-checked="true"/>
         <label class="form-check-label" for="splitToggle">
           Split long text into human-like paragraphs
         </label>
@@ -55,135 +107,28 @@
 
       <!-- Buttons -->
       <div class="d-flex gap-2 mb-3">
-        <button id="humanizeBtn" class="btn btn-primary flex-fill">✨ Humanize</button>
-        <button id="clearBtn" class="btn btn-outline-secondary flex-fill">Clear</button>
+        <button id="humanizeBtn" class="btn btn-primary flex-fill" aria-label="Humanize text">✨ Humanize</button>
+        <button id="clearBtn" class="btn btn-outline-secondary flex-fill" aria-label="Clear input">Clear</button>
+        <button id="copyBtn" class="btn btn-success flex-fill" aria-label="Copy output">📋 Copy</button>
       </div>
 
-      <!-- Spinner -->
-      <div class="text-center mb-3">
-        <div id="loading" class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Processing...</span>
-        </div>
+      <!-- Progress -->
+      <div class="progress mb-3" role="progressbar" aria-label="Processing progress">
+        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
       </div>
 
       <!-- Output -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Humanized Output</label>
-        <textarea id="outputText" class="form-control" rows="6" readonly></textarea>
+      <section class="mb-2">
+        <label for="outputText" class="form-label fw-semibold">Humanized Output</label>
+        <textarea id="outputText" class="form-control" rows="6" readonly aria-label="Output humanized text"></textarea>
+      </section>
+      <div class="stats" aria-live="polite">
+        <span id="wordCount">0</span> words • <span id="sentenceCount">0</span> sentences
       </div>
-    </div>
-  </div>
+    </article>
+  </main>
 
-  <script>
-    const humanizeBtn = document.getElementById("humanizeBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const inputText = document.getElementById("inputText");
-    const outputText = document.getElementById("outputText");
-    const loading = document.getElementById("loading");
-    const strengthSlider = document.getElementById("strength");
-    const strengthValue = document.getElementById("strengthValue");
-    const splitToggle = document.getElementById("splitToggle");
-    const purposeSelect = document.getElementById("purpose");
-
-    // Update strength display
-    strengthSlider.addEventListener("input", () => {
-      strengthValue.textContent = strengthSlider.value;
-    });
-
-    // Utility functions
-    function shuffleSentence(sentence) {
-      let words = sentence.split(" ");
-      if (words.length > 6) {
-        const idx = Math.floor(Math.random() * words.length);
-        let word = words.splice(idx, 1)[0];
-        words.push(word);
-      }
-      return words.join(" ");
-    }
-
-    function humanizeText(text, strength, splitParagraphs, purpose) {
-      let sentences = text.split(/(?<=[.!?])\s+/);
-      let processed = sentences.map(sentence => {
-        let s = sentence.trim();
-        if (!s) return "";
-
-        // Common tweaks
-        if (Math.random() * 100 < strength) s = shuffleSentence(s);
-        if (Math.random() * 100 < strength / 2) s = "Interestingly, " + s;
-        if (Math.random() * 100 < strength / 2) s += " — just like people might casually explain.";
-        if (Math.random() * 100 < strength / 3) s = s.replace(/\bis\b/g, " is actually");
-
-        // Purpose-specific tweaks
-        if (purpose === "social") {
-          if (Math.random() > 0.6) s = "👉 " + s; // add emphasis for posts
-        }
-        if (purpose === "copy") {
-          if (Math.random() > 0.6) s += " ✅"; // persuasive symbols
-        }
-        if (purpose === "academic") {
-          if (Math.random() > 0.6) s = "According to research, " + s;
-        }
-        if (purpose === "story") {
-          if (Math.random() > 0.6) s = "Once upon a time, " + s;
-        }
-
-        return s;
-      });
-
-      if (!splitParagraphs) return processed.join(" ");
-
-      // Group into paragraphs (2–4 sentences)
-      let paragraphs = [];
-      let temp = [];
-      processed.forEach((s, i) => {
-        temp.push(s);
-        if (temp.length >= 2 && (Math.random() > 0.5 || i === processed.length - 1)) {
-          paragraphs.push(temp.join(" "));
-          temp = [];
-        }
-      });
-      return paragraphs.join("\n\n");
-    }
-
-    // Button Events
-    humanizeBtn.addEventListener("click", () => {
-      const text = inputText.value.trim();
-      if (!text) {
-        alert("Please paste some text first!");
-        return;
-      }
-
-      // Disable while processing
-      humanizeBtn.disabled = true;
-      clearBtn.disabled = true;
-      inputText.disabled = true;
-      strengthSlider.disabled = true;
-      splitToggle.disabled = true;
-      purposeSelect.disabled = true;
-      loading.style.display = "inline-block";
-
-      setTimeout(() => {
-        const strength = parseInt(strengthSlider.value);
-        const split = splitToggle.checked;
-        const purpose = purposeSelect.value;
-        const result = humanizeText(text, strength, split, purpose);
-        outputText.value = result;
-
-        // Re-enable
-        humanizeBtn.disabled = false;
-        clearBtn.disabled = false;
-        inputText.disabled = false;
-        strengthSlider.disabled = false;
-        splitToggle.disabled = false;
-        purposeSelect.disabled = false;
-        loading.style.display = "none";
-      }, 1200);
-    });
-
-    clearBtn.addEventListener("click", () => {
-      inputText.value = "";
-      outputText.value = "";
-    });
-  </script>
+  <!-- Your JavaScript (unchanged logic) -->
+  <script src="humanizer.js" defer></script>
 </body>
 </html>
