@@ -18,7 +18,7 @@
   <div class="container">
     <div class="card p-4">
       <h2 class="mb-3 text-center fw-bold">📝 Humanize</h2>
-      <p class="text-muted text-center">No signup, No credit card , No server, <b>100% Free</b></p>
+      <p class="text-muted text-center">No signup, No credit card, No server, <b>100% Free</b></p>
 
       <!-- Input -->
       <div class="mb-3">
@@ -30,6 +30,19 @@
       <div class="mb-3">
         <label for="strength" class="form-label strength-label">Humanization Strength: <span id="strengthValue">50</span>%</label>
         <input type="range" class="form-range" min="0" max="100" value="50" id="strength">
+      </div>
+
+      <!-- Purpose Dropdown -->
+      <div class="mb-3">
+        <label for="purpose" class="form-label fw-semibold">Purpose of Text</label>
+        <select id="purpose" class="form-select">
+          <option value="article">📰 Article / Essay</option>
+          <option value="blog">✍️ Blog Post</option>
+          <option value="social">📱 Social Media Post</option>
+          <option value="copy">💡 Copywriting / Ads</option>
+          <option value="academic">📚 Academic Writing</option>
+          <option value="story">📖 Storytelling / Creative</option>
+        </select>
       </div>
 
       <!-- Paragraph Split Toggle -->
@@ -70,6 +83,7 @@
     const strengthSlider = document.getElementById("strength");
     const strengthValue = document.getElementById("strengthValue");
     const splitToggle = document.getElementById("splitToggle");
+    const purposeSelect = document.getElementById("purpose");
 
     // Update strength display
     strengthSlider.addEventListener("input", () => {
@@ -87,17 +101,31 @@
       return words.join(" ");
     }
 
-    function humanizeText(text, strength, splitParagraphs) {
+    function humanizeText(text, strength, splitParagraphs, purpose) {
       let sentences = text.split(/(?<=[.!?])\s+/);
       let processed = sentences.map(sentence => {
         let s = sentence.trim();
         if (!s) return "";
 
-        // apply changes based on strength
+        // Common tweaks
         if (Math.random() * 100 < strength) s = shuffleSentence(s);
         if (Math.random() * 100 < strength / 2) s = "Interestingly, " + s;
         if (Math.random() * 100 < strength / 2) s += " — just like people might casually explain.";
         if (Math.random() * 100 < strength / 3) s = s.replace(/\bis\b/g, " is actually");
+
+        // Purpose-specific tweaks
+        if (purpose === "social") {
+          if (Math.random() > 0.6) s = "👉 " + s; // add emphasis for posts
+        }
+        if (purpose === "copy") {
+          if (Math.random() > 0.6) s += " ✅"; // persuasive symbols
+        }
+        if (purpose === "academic") {
+          if (Math.random() > 0.6) s = "According to research, " + s;
+        }
+        if (purpose === "story") {
+          if (Math.random() > 0.6) s = "Once upon a time, " + s;
+        }
 
         return s;
       });
@@ -131,12 +159,14 @@
       inputText.disabled = true;
       strengthSlider.disabled = true;
       splitToggle.disabled = true;
+      purposeSelect.disabled = true;
       loading.style.display = "inline-block";
 
       setTimeout(() => {
         const strength = parseInt(strengthSlider.value);
         const split = splitToggle.checked;
-        const result = humanizeText(text, strength, split);
+        const purpose = purposeSelect.value;
+        const result = humanizeText(text, strength, split, purpose);
         outputText.value = result;
 
         // Re-enable
@@ -145,6 +175,7 @@
         inputText.disabled = false;
         strengthSlider.disabled = false;
         splitToggle.disabled = false;
+        purposeSelect.disabled = false;
         loading.style.display = "none";
       }, 1200);
     });
