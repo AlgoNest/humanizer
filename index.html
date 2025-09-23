@@ -42,95 +42,110 @@
   </div>
 
   <script>
-    function shuffleSentences(paragraph) {
-      let sentences = paragraph.match(/[^.!?]+[.!?]/g) || [paragraph];
-      if (sentences.length > 3) {
-        // swap middle sentences randomly
-        let i = 1 + Math.floor(Math.random() * (sentences.length - 2));
-        let j = 1 + Math.floor(Math.random() * (sentences.length - 2));
-        [sentences[i], sentences[j]] = [sentences[j], sentences[i]];
-      }
-      return sentences.join(" ");
+function humanizeText() {
+  const inputEl = document.getElementById("inputText");
+  const outputEl = document.getElementById("outputText");
+  const buttonEl = document.getElementById("humanizeBtn");
+  const spinnerEl = document.getElementById("loadingSpinner");
+
+  let text = inputEl.value.trim();
+  if (!text) {
+    alert("Please paste some text first!");
+    return;
+  }
+
+  // Lock UI
+  inputEl.disabled = true;
+  buttonEl.disabled = true;
+  spinnerEl.style.display = "inline-block";
+  outputEl.value = "";
+
+  setTimeout(() => {
+    // Step 1: contractions & casual replacements
+    text = text.replace(/\bdo not\b/gi, "don't")
+               .replace(/\bdoes not\b/gi, "doesn't")
+               .replace(/\bit is\b/gi, "it's")
+               .replace(/\bwe are\b/gi, "we're")
+               .replace(/\bthey are\b/gi, "they're");
+
+    // Step 2: strong synonym swaps
+    const synonyms = {
+      "important": ["crucial", "key", "vital", "big deal"],
+      "significant": ["notable", "meaningful", "major"],
+      "problem": ["issue", "challenge", "hurdle", "sticking point"],
+      "solution": ["fix", "answer", "way out"],
+      "benefit": ["advantage", "perk", "plus side"],
+      "example": ["case in point", "instance", "illustration"],
+      "show": ["highlight", "demonstrate", "point out", "reveal"]
+    };
+    for (let word in synonyms) {
+      let regex = new RegExp("\\b" + word + "\\b", "gi");
+      text = text.replace(regex, () => {
+        let arr = synonyms[word];
+        return arr[Math.floor(Math.random() * arr.length)];
+      });
     }
 
-    function humanizeText() {
-      const inputEl = document.getElementById("inputText");
-      const outputEl = document.getElementById("outputText");
-      const buttonEl = document.getElementById("humanizeBtn");
-      const spinnerEl = document.getElementById("loadingSpinner");
+    // Step 3: sentence restructuring
+    let sentences = text.split(/([.!?])\s+/);
+    let rebuilt = [];
+    for (let i = 0; i < sentences.length; i += 2) {
+      let s = (sentences[i] || "").trim();
+      let punc = sentences[i+1] || "";
 
-      let text = inputEl.value.trim();
-      if (!text) {
-        alert("Please paste some text first!");
-        return;
+      if (!s) continue;
+
+      // Randomly insert human-like connectors
+      if (Math.random() > 0.7) {
+        let fillers = ["To be fair,", "Frankly,", "You might say,", "Actually,"];
+        s = fillers[Math.floor(Math.random() * fillers.length)] + " " + s;
       }
 
-      // Lock input + show spinner
-      inputEl.disabled = true;
-      buttonEl.disabled = true;
-      spinnerEl.style.display = "inline-block";
-      outputEl.value = "";
-
-      setTimeout(() => {
-        // Step 1: contractions
-        text = text.replace(/\bdo not\b/gi, "don't")
-                   .replace(/\bcan not\b/gi, "can't")
-                   .replace(/\bit is\b/gi, "it's")
-                   .replace(/\bthey are\b/gi, "they're")
-                   .replace(/\bwe are\b/gi, "we're");
-
-        // Step 2: synonyms + phrase swaps
-        const replacements = {
-          "moreover": ["also", "what’s more", "on top of that"],
-          "therefore": ["so", "which means", "as a result"],
-          "artificial intelligence": ["AI", "machine intelligence", "smart systems"],
-          "in conclusion": ["to sum up", "overall", "all things considered"],
-          "utilize": ["use", "make use of", "take advantage of"],
-          "demonstrates": ["shows", "highlights", "makes clear"]
-        };
-        for (let word in replacements) {
-          let options = replacements[word];
-          let regex = new RegExp("\\b" + word + "\\b", "gi");
-          text = text.replace(regex, () => {
-            return options[Math.floor(Math.random() * options.length)];
-          });
-        }
-
-        // Step 3: break long paragraphs into smaller chunks
-        let paragraphs = text.split(/\n+/).map(p => p.trim()).filter(p => p);
-        let newParagraphs = [];
-        for (let p of paragraphs) {
-          // apply mild sentence shuffle
-          p = shuffleSentences(p);
-
-          if (p.length > 300) {
-            let mid = Math.floor(p.length / 2);
-            let cut = p.indexOf(".", mid);
-            if (cut !== -1) {
-              newParagraphs.push(p.slice(0, cut+1));
-              newParagraphs.push(p.slice(cut+1));
-              continue;
-            }
-          }
-          newParagraphs.push(p);
-        }
-
-        // Step 4: optional filler / casual tone
-        let finalText = newParagraphs.join("\n\n");
-        if (Math.random() > 0.6) {
-          finalText = "Honestly, " + finalText;
-        }
-        if (Math.random() > 0.7) {
-          finalText += " You know, that's kind of the gist of it.";
-        }
-
-        // Step 5: output clean text
-        outputEl.value = finalText.trim();
-        inputEl.disabled = false;
-        buttonEl.disabled = false;
-        spinnerEl.style.display = "none";
-      }, 1300); // simulate processing
+      // Sometimes split long sentences
+      let words = s.split(" ");
+      if (words.length > 18 && Math.random() > 0.5) {
+        let mid = Math.floor(words.length / 2);
+        rebuilt.push(words.slice(0, mid).join(" ") + ".");
+        rebuilt.push(words.slice(mid).join(" ") + punc);
+      } else {
+        rebuilt.push(s + punc);
+      }
     }
-  </script>
+
+    // Step 4: paragraph restructuring
+    let finalText = rebuilt.join(" ").replace(/\s+/g, " ").trim();
+    let paras = finalText.split(/(?<=\.)\s+/);
+    let reshaped = [];
+    paras.forEach((p, idx) => {
+      if (p.length > 200 && Math.random() > 0.4) {
+        // break large paragraphs
+        let mid = Math.floor(p.length / 2);
+        reshaped.push(p.slice(0, mid));
+        reshaped.push(p.slice(mid));
+      } else {
+        reshaped.push(p);
+      }
+
+      // add transitions
+      if (idx % 2 === 1 && Math.random() > 0.6) {
+        reshaped.push("Now, let’s shift focus a bit.");
+      }
+    });
+
+    // Step 5: short punchy endings
+    if (Math.random() > 0.5) reshaped.push("That’s the bottom line.");
+    if (Math.random() > 0.7) reshaped.push("Pretty straightforward, right?");
+
+    outputEl.value = reshaped.join("\n\n").trim();
+
+    // Unlock UI
+    inputEl.disabled = false;
+    buttonEl.disabled = false;
+    spinnerEl.style.display = "none";
+  }, 1500);
+}
+</script>
+
+
 </body>
 </html>
