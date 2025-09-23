@@ -54,98 +54,96 @@
   </div>
 
   <script>
-    const humanizeBtn = document.getElementById("humanizeBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const inputText = document.getElementById("inputText");
-    const outputText = document.getElementById("outputText");
-    const loading = document.getElementById("loading");
-    const strengthSlider = document.getElementById("strength");
-    const strengthValue = document.getElementById("strengthValue");
+  const humanizeBtn = document.getElementById("humanizeBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const inputText = document.getElementById("inputText");
+  const outputText = document.getElementById("outputText");
+  const loading = document.getElementById("loading");
+  const mode = document.getElementById("mode");
 
-    // Update strength value display
-    strengthSlider.addEventListener("input", () => {
-      strengthValue.textContent = strengthSlider.value;
-    });
-
-    // Simple synonym dictionary
-    const synonyms = {
-      "utilize": "use",
-      "commence": "start",
-      "demonstrate": "show",
-      "assistance": "help",
-      "purchase": "buy",
-      "endeavor": "effort",
-      "objective": "goal",
-      "conclusion": "ending",
-      "numerous": "many",
-      "optimize": "improve",
-      "individuals": "people"
-    };
-
-    // Humanizer Function
-    function humanizeText(text, strength) {
-      let sentences = text.split(/(?<=[.!?])\s+/);
-
-      return sentences.map((sentence, index) => {
-        let s = sentence.trim();
-        if (!s) return "";
-
-        // Replace synonyms more often with higher strength
-        for (let word in synonyms) {
-          const regex = new RegExp("\\b" + word + "\\b", "gi");
-          if (Math.random() * 100 < strength) {
-            s = s.replace(regex, synonyms[word]);
-          }
-        }
-
-        // Add fillers sometimes (based on strength)
-        if (Math.random() * 100 < strength / 3 && s.length > 30) {
-          const fillers = ["To be fair,", "In simple terms,", "You could say,", "Honestly,"];
-          s = fillers[Math.floor(Math.random() * fillers.length)] + " " + s;
-        }
-
-        // Mild sentence variation
-        if (Math.random() * 100 < strength / 2) {
-          s = s.replace(" is ", " is actually ");
-        }
-
-        return s;
-      }).join(" ");
+  // Utility functions
+  function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function shuffleSentence(sentence) {
+    let words = sentence.split(" ");
+    if (words.length > 6) {
+      const idx = Math.floor(Math.random() * words.length);
+      let word = words.splice(idx, 1)[0];
+      words.push(word);
     }
+    return words.join(" ");
+  }
 
-    // Button Events
-    humanizeBtn.addEventListener("click", () => {
-      const text = inputText.value.trim();
-      const strength = parseInt(strengthSlider.value);
-      if (!text) {
-        alert("Please paste some text first!");
-        return;
+  // Humanizer with paragraph splitting
+  function humanizeText(text, modeType) {
+    let sentences = text.split(/(?<=[.!?])\s+/);
+
+    let processed = sentences.map(sentence => {
+      let s = sentence.trim();
+      if (!s) return "";
+
+      if (modeType === "bypass") {
+        if (Math.random() > 0.5) s = shuffleSentence(s);
+        if (Math.random() > 0.7) s = "Interestingly, " + s;
+        if (Math.random() > 0.7) s += " — just like people would explain casually.";
+        return s;
       }
 
-      // Disable while processing
-      humanizeBtn.disabled = true;
-      clearBtn.disabled = true;
-      inputText.disabled = true;
-      strengthSlider.disabled = true;
-      loading.style.display = "inline-block";
+      if (modeType === "article") {
+        if (Math.random() > 0.5) s = s.replace(" is ", " is actually ");
+        if (Math.random() > 0.6) s = s.replace("It ", "In fact, it ");
+        if (Math.random() > 0.6) s = s.replace("This ", "Interestingly, this ");
+        return s;
+      }
 
-      setTimeout(() => {
-        const result = humanizeText(text, strength);
-        outputText.value = result;
-
-        // Re-enable
-        humanizeBtn.disabled = false;
-        clearBtn.disabled = false;
-        inputText.disabled = false;
-        strengthSlider.disabled = false;
-        loading.style.display = "none";
-      }, 1000);
+      return s;
     });
 
-    clearBtn.addEventListener("click", () => {
-      inputText.value = "";
-      outputText.value = "";
+    // 🔹 Paragraph splitting: group 2–4 sentences per paragraph
+    let paragraphs = [];
+    let temp = [];
+    processed.forEach((s, i) => {
+      temp.push(s);
+      if (temp.length >= 2 && (Math.random() > 0.5 || i === processed.length - 1)) {
+        paragraphs.push(temp.join(" "));
+        temp = [];
+      }
     });
-  </script>
+
+    return paragraphs.join("\n\n"); // double new line for paragraph breaks
+  }
+
+  // Button Events
+  humanizeBtn.addEventListener("click", () => {
+    const text = inputText.value.trim();
+    if (!text) {
+      alert("Please paste some text first!");
+      return;
+    }
+
+    humanizeBtn.disabled = true;
+    clearBtn.disabled = true;
+    inputText.disabled = true;
+    mode.disabled = true;
+    loading.style.display = "inline-block";
+
+    setTimeout(() => {
+      const modeType = mode.value;
+      const result = humanizeText(text, modeType);
+      outputText.value = result;
+
+      humanizeBtn.disabled = false;
+      clearBtn.disabled = false;
+      inputText.disabled = false;
+      mode.disabled = false;
+      loading.style.display = "none";
+    }, 1200);
+  });
+
+  clearBtn.addEventListener("click", () => {
+    inputText.value = "";
+    outputText.value = "";
+  });
+</script>
+
 </body>
 </html>
