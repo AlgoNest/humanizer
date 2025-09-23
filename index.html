@@ -26,8 +26,9 @@
       <p id="wordCount" class="text-muted">Word Count: 0</p>
 
       <!-- Buttons -->
-      <div class="d-flex justify-content-center align-items-center gap-3">
-        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize</button>
+      <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+        <button id="humanizeBtn" class="btn btn-custom" onclick="humanizeText()">Humanize (AI)</button>
+        <button id="fallbackBtn" class="btn btn-warning" onclick="fallbackHumanizer()">Humanize (Offline)</button>
         <button class="btn btn-secondary" onclick="clearText()">Clear</button>
         <button class="btn btn-primary" onclick="copyText()">Copy</button>
         <div class="spinner-border text-success" role="status" id="spinner"></div>
@@ -49,7 +50,7 @@
     const wordCount = document.getElementById("wordCount");
     const humanizeBtn = document.getElementById("humanizeBtn");
 
-    // Update word count live
+    // Update word count
     inputText.addEventListener("input", () => {
       let count = inputText.value.trim().split(/\s+/).filter(word => word.length > 0).length;
       wordCount.textContent = "Word Count: " + count;
@@ -73,7 +74,7 @@
       alert("Humanized text copied!");
     }
 
-    // Humanize function
+    // AI Humanizer (via Puter.js)
     async function humanizeText() {
       const text = inputText.value.trim();
       if (!text) {
@@ -81,27 +82,73 @@
         return;
       }
 
-      // Disable UI
       spinner.style.display = "inline-block";
       humanizeBtn.disabled = true;
       inputText.disabled = true;
 
       try {
         const response = await puter.ai.chat(
-          `Rewrite the following text to make it appear as if written by a human, adding natural variation, contractions, and informal flow. Do not explain, only return the rewritten text:\n\n${text}`,
+          `Rewrite the following text to make it appear as if written by a human. Add natural variation, contractions, informal flow, and avoid robotic consistency. Return only the rewritten text:\n\n${text}`,
           { model: "gpt-5-nano" }
         );
-
         outputText.value = response;
       } catch (err) {
         console.error(err);
-        alert("Error processing text. Try again!");
+        alert("Error with AI humanizer. Try offline mode!");
       }
 
-      // Re-enable UI
       spinner.style.display = "none";
       humanizeBtn.disabled = false;
       inputText.disabled = false;
+    }
+
+    // Offline Fallback Humanizer (JS only)
+    function fallbackHumanizer() {
+      const text = inputText.value.trim();
+      if (!text) {
+        alert("Please paste some text first!");
+        return;
+      }
+
+      let sentences = text.split(/([.?!])\s+/).map(s => s.trim()).filter(s => s.length > 0);
+
+      // Common contractions
+      const contractions = {
+        "do not": "don’t", "cannot": "can’t", "is not": "isn’t",
+        "will not": "won’t", "I am": "I’m", "they are": "they’re",
+        "you are": "you’re", "we are": "we’re", "it is": "it’s"
+      };
+
+      // Filler words
+      const fillers = ["honestly", "well", "you know", "kind of", "to be fair", "actually"];
+
+      let humanized = sentences.map((s, i) => {
+        let sentence = s;
+
+        // Randomly add contractions
+        for (let key in contractions) {
+          if (sentence.toLowerCase().includes(key) && Math.random() > 0.5) {
+            sentence = sentence.replace(new RegExp(key, "gi"), contractions[key]);
+          }
+        }
+
+        // Add filler word sometimes
+        if (Math.random() > 0.6) {
+          sentence = fillers[Math.floor(Math.random() * fillers.length)] + ", " + sentence;
+        }
+
+        // Shorten overly long sentences
+        if (sentence.split(" ").length > 20) {
+          let parts = sentence.split(",");
+          if (parts.length > 1) {
+            sentence = parts.slice(0, 2).join(",") + ". " + parts.slice(2).join(",");
+          }
+        }
+
+        return sentence;
+      }).join(" ");
+
+      outputText.value = humanized;
     }
   </script>
 </body>
