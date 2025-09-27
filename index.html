@@ -190,7 +190,7 @@ gpt0,
       font-family: Verdana, Geneva, sans-serif;
     }
     
-    /* Modern Section Styles */
+    /* Improved Section Styles */
     .feature-section {
       margin-top: 50px;
       padding: 40px 0;
@@ -204,6 +204,7 @@ gpt0,
       margin-bottom: 30px;
       position: relative;
       display: inline-block;
+      font-size: 1.5rem;
     }
     
     .section-title::after {
@@ -225,6 +226,7 @@ gpt0,
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       transition: all 0.3s ease;
       border-left: 4px solid var(--primary);
+      margin-bottom: 20px;
     }
     
     .feature-card:hover {
@@ -256,12 +258,13 @@ gpt0,
       border-radius: 50%;
       font-weight: bold;
       margin-right: 15px;
+      flex-shrink: 0;
     }
     
     .benefit-item {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     
     .benefit-icon {
@@ -269,6 +272,7 @@ gpt0,
       font-size: 20px;
       margin-right: 15px;
       margin-top: 3px;
+      flex-shrink: 0;
     }
     
     .highlight-box {
@@ -291,9 +295,29 @@ gpt0,
       margin-bottom: 15px;
     }
     
+    /* Improved consistency for all sections */
+    .section-content h5 {
+      color: var(--dark);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .section-content p {
+      color: #555;
+      margin-bottom: 0;
+    }
+    
     @media (max-width: 768px) {
       .feature-card {
         margin-bottom: 20px;
+      }
+      
+      .benefit-item {
+        margin-bottom: 20px;
+      }
+      
+      .section-title {
+        font-size: 1.3rem;
       }
     }
   </style>
@@ -369,77 +393,92 @@ gpt0,
     <!-- How to Use & Features Section -->
     <section class="feature-section p-4 mt-5">
       <div class="row">
+        <!-- How to Use Section -->
         <div class="col-lg-4 mb-4">
           <h3 class="section-title">How to Use</h3>
-          <div class="benefit-item">
-            <div class="step-number">1</div>
-            <div>
-              <h5 class="fw-semibold">Paste AI Text</h5>
-              <p class="mb-0">Copy and paste any AI-generated content into the input field.</p>
+          <div class="section-content">
+            <div class="benefit-item">
+              <div class="step-number">1</div>
+              <div>
+                <h5 class="fw-semibold">Paste AI Text</h5>
+                <p class="mb-0">Copy and paste any AI-generated content into the input field.</p>
+              </div>
             </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="step-number">2</div>
-            <div>
-              <h5 class="fw-semibold">Adjust Settings</h5>
-              <p class="mb-0">Fine-tune the humanization strength and select the text purpose.</p>
+            
+            <div class="benefit-item">
+              <div class="step-number">2</div>
+              <div>
+                <h5 class="fw-semibold">Adjust Settings</h5>
+                <p class="mb-0">Fine-tune the humanization strength and select the text purpose.</p>
+              </div>
             </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="step-number">3</div>
-            <div>
-              <h5 class="fw-semibold">Humanize & Copy</h5>
-              <p class="mb-0">Click the Humanize button and copy your transformed text.</p>
+            
+            <div class="benefit-item">
+              <div class="step-number">3</div>
+              <div>
+                <h5 class="fw-semibold">Humanize & Copy</h5>
+                <p class="mb-0">Click the Humanize button and copy your transformed text.</p>
+              </div>
             </div>
           </div>
         </div>
         
+        <!-- What We Offer Section -->
         <div class="col-lg-4 mb-4">
           <h3 class="section-title">What We Offer</h3>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-            <div>
-              <h5 class="fw-semibold">100% Free & No Signup</h5>
-              <p class="mb-0">Use our tool without creating an account or providing payment details.</p>
+          <div class="section-content">
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
+              <div>
+                <h5 class="fw-semibold">100% Free & No Signup</h5>
+                <p class="mb-0">Use our tool without creating an account or providing payment details.</p>
+              </div>
             </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-            <div>
-              <h5 class="fw-semibold">Preserve Meaning Mode</h5>
-              <p class="mb-0">Our algorithm maintains your original message while making it sound human.</p>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
+              <div>
+                <h5 class="fw-semibold">Preserve Meaning Mode</h5>
+                <p class="mb-0">Our algorithm maintains your original message while making it sound human.</p>
+              </div>
             </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-            <div>
-              <h5 class="fw-semibold">Multiple Text Types</h5>
-              <p class="mb-0">Optimized for articles, blogs, social media, academic writing, and more.</p>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
+              <div>
+                <h5 class="fw-semibold">Multiple Text Types</h5>
+                <p class="mb-0">Optimized for articles, blogs, social media, academic writing, and more.</p>
+              </div>
             </div>
           </div>
         </div>
         
+        <!-- Why Use Our Tool Section -->
         <div class="col-lg-4 mb-4">
           <h3 class="section-title">Why Use Our Tool</h3>
-          
-          <div class="feature-card">
-            <div class="value-prop">
-              <div class="value-icon"><i class="fas fa-robot"></i></div>
-              <h5 class="fw-semibold">Bypass AI Detection</h5>
-              <p>Make AI content undetectable while preserving your message's integrity.</p>
+          <div class="section-content">
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-robot"></i></div>
+              <div>
+                <h5 class="fw-semibold">Bypass AI Detection</h5>
+                <p class="mb-0">Make AI content undetectable while preserving your message's integrity.</p>
+              </div>
             </div>
-          </div>
-          
-          <div class="feature-card mt-3">
-            <div class="value-prop">
-              <div class="value-icon"><i class="fas fa-chart-line"></i></div>
-              <h5 class="fw-semibold">Improve Engagement</h5>
-              <p>Human-like text connects better with readers, increasing engagement.</p>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+              <div>
+                <h5 class="fw-semibold">Improve Engagement</h5>
+                <p class="mb-0">Human-like text connects better with readers, increasing engagement.</p>
+              </div>
+            </div>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+              <div>
+                <h5 class="fw-semibold">Save Time & Effort</h5>
+                <p class="mb-0">Transform AI text in seconds without manual editing or rewriting.</p>
+              </div>
             </div>
           </div>
         </div>
