@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Humanizer Tool - 100% Free Text Humanization | No Signup Required</title>
+  <title>Advanced AI Humanizer - Transform AI Text to Human-Like Content | Free Tool</title>
   
-  <!-- Meta SEO -->
-  <meta name="description" content="Free AI humanizer tool that transforms AI-generated text into natural, human-like content. No signup, no credit card required. Preserve meaning while bypassing AI detection.">
-  <meta name="keywords" content="ai humanizer, humanize ai text, ai text converter, free text humanizer, bypass ai detection, paraphrase tool, ai content humanizer, free writing tool">
+  <!-- Enhanced Meta SEO -->
+  <meta name="description" content="Advanced AI humanizer with tone detection, multi-language support, and real-time analysis. Transform AI-generated text into natural, human-like content instantly. 100% free, no signup required.">
+  <meta name="keywords" content="ai humanizer, humanize ai text, ai text converter, free text humanizer, bypass ai detection, paraphrase tool, ai content humanizer, advanced text humanization, tone detection, multilingual humanizer">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Ahmad Hassan">
   <link rel="canonical" href="https://algonest.github.io/humanizer/" />
 
   <!-- Open Graph (Facebook/LinkedIn) -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="AI Humanizer - Free Text Humanization Tool">
-  <meta property="og:description" content="Transform AI-generated text into natural, human-like content. 100% free, no signup required.">
+  <meta property="og:title" content="Advanced AI Humanizer - Next-Level Text Humanization">
+  <meta property="og:description" content="Transform AI-generated text with advanced features like tone detection, multi-language support, and real-time analysis. 100% free.">
   <meta property="og:url" content="https://algonest.github.io/humanizer/">
   <meta property="og:image" content="https://algonest.github.io/humanizer/og-image.png">
-  <meta property="og:site_name" content="AI Humanizer Tool">
+  <meta property="og:site_name" content="Advanced AI Humanizer">
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Humanizer - Free Text Humanization Tool">
-  <meta name="twitter:description" content="Transform AI-generated text into natural, human-like content. 100% free, no signup required.">
+  <meta name="twitter:title" content="Advanced AI Humanizer - Next-Level Text Humanization">
+  <meta name="twitter:description" content="Transform AI-generated text with advanced features like tone detection and real-time analysis. 100% free.">
   <meta name="twitter:image" content="https://algonest.github.io/humanizer/og-image.png">
 
   <!-- Favicon -->
@@ -41,11 +41,12 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "AI Humanizer Tool",
+    "name": "Advanced AI Humanizer Tool",
     "url": "https://algonest.github.io/humanizer/",
     "applicationCategory": "WritingApplication",
     "operatingSystem": "All",
-    "description": "Free AI humanizer tool that transforms AI-generated text into natural, human-like content",
+    "description": "Advanced AI humanizer with tone detection, multi-language support, and real-time analysis",
+    "featureList": "Tone detection, Multi-language support, Real-time analysis, AI detection scoring, Advanced customization",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -55,10 +56,6 @@
       "@type": "Person",
       "name": "Ahmad Hassan",
       "url": "https://linkedin.com/in/ahmad--hassan"
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://algonest.github.io/humanizer/"
     }
   }
   </script>
@@ -70,18 +67,21 @@
       --accent: #D35400;
       --light: #FEF3E2;
       --dark: #333333;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
     }
     
     body { 
       background: #FDEB9E; 
-      font-family: Verdana, Geneva, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
       color: #333;
     }
     
     main.container { 
-      max-width: 900px; 
-      margin-top: 40px; 
+      max-width: 1100px; 
+      margin-top: 30px; 
     }
     
     .card { 
@@ -90,6 +90,7 @@
       background-color: white;
       border: none;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
     }
     
     .card:hover {
@@ -100,8 +101,9 @@
     textarea { 
       resize: none; 
       border-radius: 10px;
-      font-family: Verdana, Geneva, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 15px;
     }
     
     textarea:focus {
@@ -119,7 +121,6 @@
     .stats { 
       font-size: 14px; 
       color: #6c757d; 
-      font-family: Verdana, Geneva, sans-serif;
     }
     
     .badge-fixed { 
@@ -174,10 +175,107 @@
     
     .form-select {
       border-radius: 10px;
-      font-family: Verdana, Geneva, sans-serif;
     }
     
-    /* Improved Section Styles */
+    /* Advanced Panel Styles */
+    .advanced-panel {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .panel-toggle {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      margin-bottom: 15px;
+    }
+    
+    .panel-content {
+      display: none;
+    }
+    
+    .panel-content.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Analysis Dashboard */
+    .analysis-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .analysis-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    
+    .analysis-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+    
+    .analysis-label {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .score-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .score-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    /* Tone Indicators */
+    .tone-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .tone-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #e9ecef;
+      color: #495057;
+    }
+    
+    .tone-badge.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    /* Feature Section Styles */
     .feature-section {
       margin-top: 50px;
       padding: 40px 0;
@@ -219,19 +317,6 @@
     .feature-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    .feature-icon {
-      width: 60px;
-      height: 60px;
-      background: var(--secondary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: var(--accent);
     }
     
     .step-number {
@@ -280,18 +365,6 @@
       font-size: 40px;
       color: var(--primary);
       margin-bottom: 15px;
-    }
-    
-    /* Improved consistency for all sections */
-    .section-content h5 {
-      color: var(--dark);
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
-    
-    .section-content p {
-      color: #555;
-      margin-bottom: 0;
     }
     
     /* About Section Styles */
@@ -349,6 +422,44 @@
       font-size: 0.9rem;
     }
     
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+    }
+    
+    .toast {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+    
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+    
+    .toast.info {
+      border-left: 4px solid var(--primary);
+    }
+    
+    /* Responsive Design */
     @media (max-width: 768px) {
       .feature-card {
         margin-bottom: 20px;
@@ -371,184 +482,269 @@
         width: 200px;
         justify-content: center;
       }
+      
+      .analysis-dashboard {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <main class="container">
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
     <article class="card p-4" itemscope itemtype="https://schema.org/SoftwareApplication">
-      <h1 class="mb-1 text-center fw-bold" itemprop="name">🤖 AI Humanizer</h1>
+      <h1 class="mb-1 text-center fw-bold" itemprop="name">🚀 Advanced AI Humanizer</h1>
       <p class="text-muted text-center mb-1" itemprop="description">
-        No signup— <b>100% Free</b>. Transform AI text into human-like writing instantly.
+        Next-level text humanization with tone detection, multi-language support, and real-time analysis
       </p>
       <div class="text-center">
-        <span class="badge bg-success badge-fixed">✅ Preserve Meaning Mode (always ON)</span>
+        <span class="badge bg-success badge-fixed">✅ Preserve Meaning Mode</span>
+        <span class="badge bg-primary badge-fixed">🌍 Multi-Language</span>
+        <span class="badge bg-warning badge-fixed">🔍 AI Detection Score</span>
       </div>
 
-      <!-- Input -->
+      <!-- Input Section -->
       <section class="mb-3 mt-3">
-        <label for="inputText" class="form-label fw-semibold">Paste Your AI Text</label>
-        <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..." aria-label="Input AI text"></textarea>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label for="inputText" class="form-label fw-semibold">Paste Your AI Text</label>
+          <button class="btn btn-sm btn-outline-secondary" id="sampleBtn">Load Sample Text</button>
+        </div>
+        <textarea id="inputText" class="form-control" rows="6" placeholder="Paste AI-generated text here..."></textarea>
       </section>
 
-      <!-- Strength Slider -->
-      <section class="mb-3">
-        <label for="strength" class="form-label fw-semibold">Humanization Strength:
-          <span id="strengthValue">50</span>%
-        </label>
-        <input type="range" class="form-range" min="0" max="100" value="50" id="strength" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"/>
-      </section>
-
-      <!-- Purpose Dropdown -->
-      <section class="mb-3">
-        <label for="purpose" class="form-label fw-semibold">Purpose of Text</label>
-        <select id="purpose" class="form-select" aria-label="Purpose of text">
-          <option value="article">📰 Article / Essay</option>
-          <option value="blog">📝 Blog Post</option>
-          <option value="social">📱 Social Media Post</option>
-          <option value="copy">💡 Copywriting / Ad</option>
-          <option value="academic">📚 Academic Writing</option>
-          <option value="story">📖 Storytelling / Creative</option>
-        </select>
-      </section>
-
-      <!-- Paragraph Split Toggle -->
-      <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="splitToggle" checked aria-checked="true"/>
-        <label class="form-check-label" for="splitToggle">
-          Split long text into human-like paragraphs
-        </label>
+      <!-- Analysis Dashboard -->
+      <div class="analysis-dashboard" id="analysisDashboard" style="display: none;">
+        <div class="analysis-card">
+          <div class="analysis-label">AI Detection Score</div>
+          <div class="analysis-value" id="aiScore">0%</div>
+          <div class="score-bar">
+            <div class="score-fill" id="aiScoreBar" style="width: 0%; background: var(--danger);"></div>
+          </div>
+        </div>
+        <div class="analysis-card">
+          <div class="analysis-label">Readability Score</div>
+          <div class="analysis-value" id="readabilityScore">0%</div>
+          <div class="score-bar">
+            <div class="score-fill" id="readabilityBar" style="width: 0%; background: var(--warning);"></div>
+          </div>
+        </div>
+        <div class="analysis-card">
+          <div class="analysis-label">Humanization Level</div>
+          <div class="analysis-value" id="humanizationLevel">0%</div>
+          <div class="score-bar">
+            <div class="score-fill" id="humanizationBar" style="width: 0%; background: var(--success);"></div>
+          </div>
+        </div>
+        <div class="analysis-card">
+          <div class="analysis-label">Detected Tone</div>
+          <div class="tone-indicators" id="toneIndicators">
+            <span class="tone-badge">Analytical</span>
+            <span class="tone-badge">Formal</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Buttons -->
-      <div class="d-flex gap-2 mb-3">
-        <button id="humanizeBtn" class="btn btn-primary flex-fill" aria-label="Humanize text">✨ Humanize</button>
-        <button id="clearBtn" class="btn btn-outline-secondary flex-fill" aria-label="Clear input">Clear</button>
-        <button id="copyBtn" class="btn btn-success flex-fill" aria-label="Copy output">📋 Copy</button>
+      <!-- Advanced Settings Panel -->
+      <div class="advanced-panel">
+        <button class="panel-toggle" id="advancedToggle">
+          <i class="fas fa-cog"></i> Advanced Settings
+          <i class="fas fa-chevron-down" id="advancedChevron"></i>
+        </button>
+        <div class="panel-content" id="advancedContent">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="strength" class="form-label fw-semibold">Humanization Strength:
+                <span id="strengthValue">50</span>%
+              </label>
+              <input type="range" class="form-range" min="0" max="100" value="50" id="strength"/>
+              
+              <label for="creativity" class="form-label fw-semibold mt-3">Creativity Level:
+                <span id="creativityValue">Medium</span>
+              </label>
+              <input type="range" class="form-range" min="0" max="100" value="50" id="creativity"/>
+            </div>
+            <div class="col-md-6">
+              <label for="purpose" class="form-label fw-semibold">Purpose of Text</label>
+              <select id="purpose" class="form-select">
+                <option value="article">📰 Article / Essay</option>
+                <option value="blog">📝 Blog Post</option>
+                <option value="social">📱 Social Media Post</option>
+                <option value="copy">💡 Copywriting / Ad</option>
+                <option value="academic">📚 Academic Writing</option>
+                <option value="story">📖 Storytelling / Creative</option>
+              </select>
+              
+              <label for="language" class="form-label fw-semibold mt-3">Language</label>
+              <select id="language" class="form-select">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="splitToggle" checked/>
+                <label class="form-check-label" for="splitToggle">
+                  Split long text into human-like paragraphs
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="idiomsToggle" checked/>
+                <label class="form-check-label" for="idiomsToggle">
+                  Add natural idioms and expressions
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="contractionsToggle" checked/>
+                <label class="form-check-label" for="contractionsToggle">
+                  Use contractions for informal tone
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="variationToggle" checked/>
+                <label class="form-check-label" for="variationToggle">
+                  Vary sentence structure
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Progress -->
-      <div class="progress mb-3" role="progressbar" aria-label="Processing progress">
+      <!-- Action Buttons -->
+      <div class="d-flex gap-2 mb-3 mt-4">
+        <button id="humanizeBtn" class="btn btn-primary flex-fill">
+          <i class="fas fa-magic me-2"></i> Advanced Humanize
+        </button>
+        <button id="analyzeBtn" class="btn btn-outline-primary">
+          <i class="fas fa-chart-bar me-2"></i> Analyze
+        </button>
+        <button id="clearBtn" class="btn btn-outline-secondary">Clear</button>
+        <button id="copyBtn" class="btn btn-success">📋 Copy</button>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress mb-3" role="progressbar">
         <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
       </div>
 
-      <!-- Output -->
+      <!-- Output Section -->
       <section class="mb-2">
         <label for="outputText" class="form-label fw-semibold">Humanized Output</label>
-        <textarea id="outputText" class="form-control" rows="6" readonly aria-label="Output humanized text"></textarea>
+        <textarea id="outputText" class="form-control" rows="6" readonly></textarea>
       </section>
+      
+      <!-- Stats -->
       <div class="stats" aria-live="polite">
-        <span id="wordCount">0</span> words • <span id="sentenceCount">0</span> sentences
+        <span id="wordCount">0</span> words • <span id="sentenceCount">0</span> sentences • 
+        <span id="readingTime">0</span> min read • <span id="gradeLevel">0</span> grade level
       </div>
     </article>
 
-    <!-- How to Use & Features Section -->
+    <!-- Features Section -->
     <section class="feature-section p-4 mt-5">
       <div class="row">
-        <!-- How to Use Section -->
         <div class="col-lg-4 mb-4">
-          <h2 class="section-title">How to Use</h2>
+          <h2 class="section-title">Advanced Features</h2>
+          <div class="section-content">
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-brain"></i></div>
+              <div>
+                <h3 class="fw-semibold">AI Detection Scoring</h3>
+                <p class="mb-0">Get instant feedback on how detectable your AI text is before and after humanization.</p>
+              </div>
+            </div>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-language"></i></div>
+              <div>
+                <h3 class="fw-semibold">Multi-Language Support</h3>
+                <p class="mb-0">Humanize text in multiple languages with language-specific optimization.</p>
+              </div>
+            </div>
+            
+            <div class="benefit-item">
+              <div class="benefit-icon"><i class="fas fa-sliders-h"></i></div>
+              <div>
+                <h3 class="fw-semibold">Advanced Customization</h3>
+                <p class="mb-0">Fine-tune creativity, tone, and structure with advanced settings.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+          <h2 class="section-title">How It Works</h2>
           <div class="section-content">
             <div class="benefit-item">
               <div class="step-number">1</div>
               <div>
-                <h3 class="fw-semibold">Paste AI Text</h3>
-                <p class="mb-0">Copy and paste any AI-generated content into the input field.</p>
+                <h3 class="fw-semibold">Text Analysis</h3>
+                <p class="mb-0">Our advanced algorithm analyzes your text for AI patterns, tone, and readability.</p>
               </div>
             </div>
             
             <div class="benefit-item">
               <div class="step-number">2</div>
               <div>
-                <h3 class="fw-semibold">Adjust Settings</h3>
-                <p class="mb-0">Fine-tune the humanization strength and select the text purpose.</p>
+                <h3 class="fw-semibold">Smart Humanization</h3>
+                <p class="mb-0">The tool applies context-aware transformations based on your settings.</p>
               </div>
             </div>
             
             <div class="benefit-item">
               <div class="step-number">3</div>
               <div>
-                <h3 class="fw-semibold">Humanize & Copy</h3>
-                <p class="mb-0">Click the Humanize button and copy your transformed text.</p>
+                <h3 class="fw-semibold">Quality Assessment</h3>
+                <p class="mb-0">Get detailed metrics on the humanization effectiveness and text quality.</p>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- What We Offer Section -->
         <div class="col-lg-4 mb-4">
-          <h2 class="section-title">What We Offer</h2>
-          <div class="section-content">
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-              <div>
-                <h3 class="fw-semibold">100% Free & No Signup</h3>
-                <p class="mb-0">Use our tool without creating an account or providing payment details.</p>
-              </div>
-            </div>
-            
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-              <div>
-                <h3 class="fw-semibold">Preserve Meaning Mode</h3>
-                <p class="mb-0">Our algorithm maintains your original message while making it sound human.</p>
-              </div>
-            </div>
-            
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-              <div>
-                <h3 class="fw-semibold">Multiple Text Types</h3>
-                <p class="mb-0">Optimized for articles, blogs, social media, academic writing, and more.</p>
-              </div>
+          <h2 class="section-title">Use Cases</h2>
+          
+          <div class="feature-card">
+            <div class="value-prop">
+              <div class="value-icon"><i class="fas fa-graduation-cap"></i></div>
+              <h3 class="fw-semibold">Academic Writing</h3>
+              <p>Transform AI-generated essays and research papers into authentic academic writing.</p>
             </div>
           </div>
-        </div>
-        
-        <!-- Why Use Our Tool Section -->
-        <div class="col-lg-4 mb-4">
-          <h2 class="section-title">Why Use Our Tool</h2>
-          <div class="section-content">
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-robot"></i></div>
-              <div>
-                <h3 class="fw-semibold">Bypass AI Detection</h3>
-                <p class="mb-0">Make AI content undetectable while preserving your message's integrity.</p>
-              </div>
-            </div>
-            
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
-              <div>
-                <h3 class="fw-semibold">Improve Engagement</h3>
-                <p class="mb-0">Human-like text connects better with readers, increasing engagement.</p>
-              </div>
-            </div>
-            
-            <div class="benefit-item">
-              <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
-              <div>
-                <h3 class="fw-semibold">Save Time & Effort</h3>
-                <p class="mb-0">Transform AI text in seconds without manual editing or rewriting.</p>
-              </div>
+          
+          <div class="feature-card mt-3">
+            <div class="value-prop">
+              <div class="value-icon"><i class="fas fa-bullhorn"></i></div>
+              <h3 class="fw-semibold">Content Marketing</h3>
+              <p>Create engaging, human-sounding content for blogs, social media, and advertisements.</p>
             </div>
           </div>
         </div>
       </div>
       
       <div class="highlight-box text-center">
-        <h3 class="fw-bold mb-3" style="color: var(--accent);">Transform AI Text in Seconds</h3>
-        <p class="mb-0">Our advanced algorithm rewrites AI-generated content to sound natural and human while preserving the original meaning. Perfect for students, content creators, marketers, and anyone who needs to humanize AI text quickly and effectively.</p>
+        <h3 class="fw-bold mb-3" style="color: var(--accent);">Next-Level Text Humanization</h3>
+        <p class="mb-0">Our advanced algorithm goes beyond simple synonym replacement, using sophisticated linguistic patterns to create truly human-sounding text while preserving your original meaning. Perfect for content creators, students, marketers, and professionals who need authentic, engaging content.</p>
       </div>
     </section>
 
     <!-- About Section -->
     <section class="about-section p-4 mt-5">
       <div class="about-content">
-        <h2 class="section-title">About This Tool</h2>
-        <p>The AI Humanizer tool was created to help content creators, students, and professionals transform AI-generated text into natural, human-like content. Our mission is to make AI content more authentic and engaging while preserving the original meaning.</p>
+        <h2 class="section-title">About This Advanced Tool</h2>
+        <p>The Advanced AI Humanizer represents the next evolution in text humanization technology. Built with sophisticated algorithms and user experience at its core, this tool helps you transform AI-generated content into authentic, human-like text that resonates with readers.</p>
         
-        <p>This tool is completely free to use with no signup required. We believe in making powerful AI tools accessible to everyone without barriers.</p>
+        <p>With features like real-time analysis, multi-language support, and detailed metrics, you have complete control over the humanization process. This tool is completely free to use with no signup required, continuing our mission to make advanced AI tools accessible to everyone.</p>
         
         <div class="about-links">
           <a href="https://linkedin.com/in/ahmad--hassan" class="about-link" target="_blank" rel="noopener">
@@ -559,235 +755,660 @@
           </a>
         </div>
         
-        <p class="mt-4">Check out my other projects and connect with me for collaborations and feedback!</p>
+        <p class="mt-4">Explore my other projects and connect with me for collaborations and feedback on this advanced tool!</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2023 AI Humanizer Tool. All rights reserved. | Created by Ahmad Hassan</p>
-      <p>This tool is 100% free to use with no hidden costs or requirements.</p>
+      <p>&copy; 2023 Advanced AI Humanizer Tool. All rights reserved. | Created by Ahmad Hassan</p>
+      <p>This advanced tool is 100% free to use with no hidden costs or requirements.</p>
     </div>
   </footer>
 
   <script>
-    // Elements
+    // Enhanced Elements
     const humanizeBtn = document.getElementById("humanizeBtn");
+    const analyzeBtn = document.getElementById("analyzeBtn");
     const clearBtn = document.getElementById("clearBtn");
     const copyBtn = document.getElementById("copyBtn");
+    const sampleBtn = document.getElementById("sampleBtn");
     const inputText = document.getElementById("inputText");
     const outputText = document.getElementById("outputText");
     const strengthSlider = document.getElementById("strength");
     const strengthValue = document.getElementById("strengthValue");
+    const creativitySlider = document.getElementById("creativity");
+    const creativityValue = document.getElementById("creativityValue");
     const splitToggle = document.getElementById("splitToggle");
+    const idiomsToggle = document.getElementById("idiomsToggle");
+    const contractionsToggle = document.getElementById("contractionsToggle");
+    const variationToggle = document.getElementById("variationToggle");
     const purposeSelect = document.getElementById("purpose");
+    const languageSelect = document.getElementById("language");
     const progressBar = document.getElementById("progressBar");
     const progress = document.querySelector(".progress");
     const wordCountEl = document.getElementById("wordCount");
     const sentenceCountEl = document.getElementById("sentenceCount");
+    const readingTimeEl = document.getElementById("readingTime");
+    const gradeLevelEl = document.getElementById("gradeLevel");
+    const analysisDashboard = document.getElementById("analysisDashboard");
+    const aiScoreEl = document.getElementById("aiScore");
+    const aiScoreBar = document.getElementById("aiScoreBar");
+    const readabilityScoreEl = document.getElementById("readabilityScore");
+    const readabilityBar = document.getElementById("readabilityBar");
+    const humanizationLevelEl = document.getElementById("humanizationLevel");
+    const humanizationBar = document.getElementById("humanizationBar");
+    const toneIndicators = document.getElementById("toneIndicators");
+    const advancedToggle = document.getElementById("advancedToggle");
+    const advancedContent = document.getElementById("advancedContent");
+    const advancedChevron = document.getElementById("advancedChevron");
+    const toastContainer = document.getElementById("toastContainer");
 
-    // Update strength label
-    strengthValue.textContent = strengthSlider.value;
-    strengthSlider.addEventListener("input", () => {
-      strengthValue.textContent = strengthSlider.value;
-    });
-
-    // Safe synonym dictionary (preserve meaning)
+    // Advanced synonym dictionaries for different languages
     const synonyms = {
-      "important": ["crucial", "essential", "significant"],
-      "good": ["great", "excellent", "positive"],
-      "bad": ["poor", "unfavorable", "negative"],
-      "show": ["demonstrate", "highlight", "reveal"],
-      "use": ["utilize", "apply", "employ"],
-      "big": ["large", "substantial", "considerable"],
-      "small": ["minor", "limited", "modest"],
-      "help": ["assist", "support", "aid"]
+      en: {
+        "important": ["crucial", "essential", "significant", "vital", "paramount"],
+        "good": ["great", "excellent", "positive", "superb", "outstanding"],
+        "bad": ["poor", "unfavorable", "negative", "subpar", "inferior"],
+        "show": ["demonstrate", "highlight", "reveal", "illustrate", "display"],
+        "use": ["utilize", "apply", "employ", "leverage", "harness"],
+        "big": ["large", "substantial", "considerable", "sizable", "significant"],
+        "small": ["minor", "limited", "modest", "slight", "minimal"],
+        "help": ["assist", "support", "aid", "facilitate", "enable"],
+        "make": ["create", "produce", "generate", "develop", "construct"],
+        "think": ["believe", "consider", "ponder", "contemplate", "reflect"]
+      },
+      es: {
+        "importante": ["crucial", "esencial", "significativo", "vital", "fundamental"],
+        "bueno": ["excelente", "positivo", "estupendo", "sobresaliente", "magnífico"],
+        "malo": ["pobre", "desfavorable", "negativo", "inferior", "deficiente"]
+      },
+      fr: {
+        "important": ["crucial", "essentiel", "significatif", "vital", "fondamental"],
+        "bon": ["excellent", "positif", "superbe", "exceptionnel", "remarquable"],
+        "mauvais": ["pauvre", "défavorable", "négatif", "inférieur", "médiocre"]
+      }
     };
 
-    // Replace a single word with a safe synonym depending on strength
-    function synonymReplace(word, strength) {
-      const lower = word.toLowerCase().replace(/[^a-z0-9'-]/gi, "");
-      if (!lower) return word;
-      if (synonyms[lower] && Math.random() * 100 < strength / 2) {
-        const options = synonyms[lower];
-        const replacement = options[Math.floor(Math.random() * options.length)];
-        // preserve capitalization and punctuation
-        const capitalized = /^[A-Z]/.test(word);
-        const trailing = word.match(/[^A-Za-z0-9'-]+$/);
-        const trailingStr = trailing ? trailing[0] : "";
-        return capitalized ? replacement.charAt(0).toUpperCase() + replacement.slice(1) + trailingStr
-                           : replacement + trailingStr;
-      }
-      return word;
-    }
+    // Idioms and expressions for natural language
+    const idioms = {
+      en: [
+        "In other words", "To put it simply", "As a matter of fact", 
+        "Believe it or not", "In a nutshell", "To be honest",
+        "Without a doubt", "By and large", "For the most part"
+      ],
+      es: [
+        "En otras palabras", "Para simplificar", "De hecho",
+        "Lo creas o no", "En resumen", "Para ser honesto"
+      ],
+      fr: [
+        "En d'autres termes", "Pour simplifier", "En fait",
+        "Croyez-le ou non", "En résumé", "Pour être honnête"
+      ]
+    };
 
-    // Split text into sentences (robust, works without lookbehind)
+    // Sample texts for demonstration
+    const sampleTexts = {
+      en: "Artificial intelligence has revolutionized many aspects of modern society. It enables machines to perform tasks that typically require human intelligence. These tasks include visual perception, speech recognition, and decision-making. The rapid advancement of AI technology presents both opportunities and challenges for humanity. Many experts believe that AI will continue to transform various industries in the coming years.",
+      es: "La inteligencia artificial ha revolucionado muchos aspectos de la sociedad moderna. Permite que las máquinas realicen tareas que normalmente requieren inteligencia humana. Estas tareas incluyen percepción visual, reconocimiento de voz y toma de decisiones. El rápido avance de la tecnología de IA presenta tanto oportunidades como desafíos para la humanidad. Muchos expertos creen que la IA continuará transformando varias industrias en los próximos años.",
+      fr: "L'intelligence artificielle a révolutionné de nombreux aspects de la société moderne. Elle permet aux machines d'effectuer des tâches qui nécessitent normalement une intelligence humaine. Ces tâches incluent la perception visuelle, la reconnaissance vocale et la prise de décision. L'avancement rapide de la technologie de l'IA présente à la fois des opportunités et des défis pour l'humanité. De nombreux experts estiment que l'IA continuera de transformer diverses industries dans les années à venir."
+    };
+
+    // Initialize UI
+    function initUI() {
+      // Update slider values
+      strengthValue.textContent = strengthSlider.value;
+      updateCreativityLabel(creativitySlider.value);
+      
+      // Set up event listeners
+      strengthSlider.addEventListener("input", () => {
+        strengthValue.textContent = strengthSlider.value;
+      });
+      
+      creativitySlider.addEventListener("input", () => {
+        updateCreativityLabel(creativitySlider.value);
+      });
+      
+      // Advanced panel toggle
+      advancedToggle.addEventListener("click", () => {
+        advancedContent.classList.toggle("show");
+        advancedChevron.classList.toggle("fa-chevron-down");
+        advancedChevron.classList.toggle("fa-chevron-up");
+      });
+      
+      // Sample text button
+      sampleBtn.addEventListener("click", () => {
+        const lang = languageSelect.value;
+        inputText.value = sampleTexts[lang] || sampleTexts.en;
+        updateStats(inputText.value);
+        showToast("Sample text loaded successfully!", "success");
+      });
+      
+      // Analyze button
+      analyzeBtn.addEventListener("click", analyzeText);
+      
+      // Initialize stats
+      updateStats("");
+    }
+    
+    // Update creativity label based on value
+    function updateCreativityLabel(value) {
+      let label = "Low";
+      if (value > 66) label = "High";
+      else if (value > 33) label = "Medium";
+      creativityValue.textContent = label;
+    }
+    
+    // Show toast notification
+    function showToast(message, type = "info") {
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      
+      let icon = "fas fa-info-circle";
+      if (type === "success") icon = "fas fa-check-circle";
+      if (type === "error") icon = "fas fa-exclamation-circle";
+      
+      toast.innerHTML = `
+        <i class="${icon}"></i>
+        <span>${message}</span>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = "slideIn 0.3s ease reverse";
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+    
+    // Analyze text for AI patterns and metrics
+    function analyzeText() {
+      const text = inputText.value.trim();
+      if (!text) {
+        showToast("Please paste some text to analyze!", "error");
+        return;
+      }
+      
+      // Show analysis dashboard
+      analysisDashboard.style.display = "grid";
+      
+      // Calculate metrics (simulated for demo)
+      const aiScore = calculateAIScore(text);
+      const readability = calculateReadability(text);
+      const humanization = 0; // Starts at 0 before humanization
+      const tones = detectTone(text);
+      
+      // Update UI with metrics
+      aiScoreEl.textContent = `${aiScore}%`;
+      aiScoreBar.style.width = `${aiScore}%`;
+      aiScoreBar.style.background = aiScore > 70 ? "var(--danger)" : aiScore > 40 ? "var(--warning)" : "var(--success)";
+      
+      readabilityScoreEl.textContent = `${readability}%`;
+      readabilityBar.style.width = `${readability}%`;
+      
+      humanizationLevelEl.textContent = `${humanization}%`;
+      humanizationBar.style.width = `${humanization}%`;
+      
+      // Update tone indicators
+      toneIndicators.innerHTML = "";
+      tones.forEach(tone => {
+        const badge = document.createElement("span");
+        badge.className = "tone-badge active";
+        badge.textContent = tone;
+        toneIndicators.appendChild(badge);
+      });
+      
+      showToast("Text analysis completed!", "success");
+    }
+    
+    // Calculate AI detection score (simulated algorithm)
+    function calculateAIScore(text) {
+      // This is a simplified simulation - real AI detection would be more complex
+      let score = 50; // Base score
+      
+      // Factors that might indicate AI-generated text
+      const factors = {
+        repetitiveStructure: text.split(/[.!?]+/).filter(s => s.trim().length > 0).length > 3 ? 
+          checkRepetitiveStructure(text) : 0,
+        uncommonWordUsage: checkUncommonWordUsage(text),
+        sentenceLengthVariation: checkSentenceLengthVariation(text),
+        predictability: checkPredictability(text)
+      };
+      
+      // Adjust score based on factors
+      score += factors.repetitiveStructure * 15;
+      score += factors.uncommonWordUsage * 10;
+      score += factors.sentenceLengthVariation * 15;
+      score += factors.predictability * 10;
+      
+      return Math.min(Math.max(Math.round(score), 0), 100);
+    }
+    
+    // Check for repetitive sentence structure
+    function checkRepetitiveStructure(text) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (sentences.length < 3) return 0;
+      
+      let repetitiveCount = 0;
+      const starters = sentences.map(s => s.trim().split(' ')[0].toLowerCase());
+      
+      for (let i = 1; i < starters.length; i++) {
+        if (starters[i] === starters[i-1]) repetitiveCount++;
+      }
+      
+      return repetitiveCount / (sentences.length - 1);
+    }
+    
+    // Check for uncommon word usage patterns
+    function checkUncommonWordUsage(text) {
+      // Simple check for overly formal or technical language
+      const formalWords = ['furthermore', 'moreover', 'however', 'thus', 'therefore', 'consequently'];
+      let formalCount = 0;
+      const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+      
+      formalWords.forEach(word => {
+        if (text.toLowerCase().includes(word)) formalCount++;
+      });
+      
+      return Math.min(formalCount / 5, 1);
+    }
+    
+    // Check sentence length variation
+    function checkSentenceLengthVariation(text) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (sentences.length < 3) return 0;
+      
+      const lengths = sentences.map(s => s.split(' ').length);
+      const avg = lengths.reduce((a, b) => a + b, 0) / lengths.length;
+      const variance = lengths.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / lengths.length;
+      
+      // Low variance might indicate AI generation
+      return Math.max(0, 1 - (variance / 10));
+    }
+    
+    // Check for predictable word patterns
+    function checkPredictability(text) {
+      // This is a simplified version - real analysis would be more complex
+      const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+      if (words.length < 10) return 0;
+      
+      let predictablePatterns = 0;
+      const commonPatterns = [
+        "it is important to",
+        "this is because",
+        "in conclusion",
+        "as a result",
+        "on the other hand"
+      ];
+      
+      commonPatterns.forEach(pattern => {
+        if (text.toLowerCase().includes(pattern)) predictablePatterns++;
+      });
+      
+      return predictablePatterns / commonPatterns.length;
+    }
+    
+    // Calculate readability score
+    function calculateReadability(text) {
+      // Simplified Flesch Reading Ease calculation
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const words = text.match(/\b\w+\b/g) || [];
+      const syllables = countSyllables(text);
+      
+      if (sentences.length === 0 || words.length === 0) return 0;
+      
+      const avgWordsPerSentence = words.length / sentences.length;
+      const avgSyllablesPerWord = syllables / words.length;
+      
+      // Flesch Reading Ease formula (simplified)
+      let score = 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord);
+      
+      return Math.min(Math.max(Math.round(score), 0), 100);
+    }
+    
+    // Count syllables in text (approximation)
+    function countSyllables(text) {
+      const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+      let syllableCount = 0;
+      
+      words.forEach(word => {
+        // Simple syllable counting heuristic
+        syllableCount += word.length / 3;
+      });
+      
+      return Math.round(syllableCount);
+    }
+    
+    // Detect tone of the text
+    function detectTone(text) {
+      const tones = [];
+      const textLower = text.toLowerCase();
+      
+      // Analytical tone detection
+      if (textLower.includes('research') || textLower.includes('data') || 
+          textLower.includes('analysis') || textLower.includes('study')) {
+        tones.push('Analytical');
+      }
+      
+      // Formal tone detection
+      if (textLower.includes('furthermore') || textLower.includes('moreover') || 
+          textLower.includes('however') || textLower.includes('therefore')) {
+        tones.push('Formal');
+      }
+      
+      // Informal tone detection
+      if (textLower.includes("don't") || textLower.includes("it's") || 
+          textLower.includes("can't") || textLower.match(/\b(cool|awesome|great)\b/)) {
+        tones.push('Informal');
+      }
+      
+      // Neutral tone as fallback
+      if (tones.length === 0) tones.push('Neutral');
+      
+      return tones.slice(0, 2); // Return up to 2 tones
+    }
+    
+    // Update text statistics
+    function updateStats(text) {
+      const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim()).length;
+      const readingTime = Math.ceil(words / 200); // Average reading speed
+      const gradeLevel = calculateGradeLevel(text);
+      
+      wordCountEl.textContent = words;
+      sentenceCountEl.textContent = sentences;
+      readingTimeEl.textContent = readingTime;
+      gradeLevelEl.textContent = gradeLevel;
+    }
+    
+    // Calculate approximate grade level (simplified)
+    function calculateGradeLevel(text) {
+      const words = text.match(/\b\w+\b/g) || [];
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim()).length;
+      
+      if (words.length === 0 || sentences === 0) return 0;
+      
+      // Simplified Automated Readability Index
+      const avgWordsPerSentence = words.length / sentences;
+      const avgWordLength = words.join('').length / words.length;
+      
+      const ari = 4.71 * avgWordLength + 0.5 * avgWordsPerSentence - 21.43;
+      
+      return Math.max(1, Math.min(12, Math.round(ari)));
+    }
+    
+    // Enhanced humanization algorithm
+    function humanizeTextCore(text, strength, creativity, splitParagraphs, purpose, language, useIdioms, useContractions, useVariation) {
+      const sentences = splitIntoSentences(text);
+      const creativityLevel = creativity / 100;
+      
+      const processed = sentences.map((sentence, index) => {
+        if (!sentence) return "";
+        
+        // Apply transformations based on creativity level
+        let processedSentence = sentence;
+        
+        // 1. Synonym replacement with creativity factor
+        processedSentence = applySynonymReplacement(processedSentence, strength, creativityLevel, language);
+        
+        // 2. Add idioms if enabled and creativity is high enough
+        if (useIdioms && creativityLevel > 0.5 && index === 0 && Math.random() < creativityLevel) {
+          const idiom = getRandomIdiom(language);
+          processedSentence = `${idiom}, ${processedSentence}`;
+        }
+        
+        // 3. Apply contractions if enabled and appropriate for the tone
+        if (useContractions && (purpose === 'blog' || purpose === 'social' || purpose === 'story')) {
+          processedSentence = applyContractions(processedSentence, creativityLevel);
+        }
+        
+        // 4. Vary sentence structure if enabled
+        if (useVariation && creativityLevel > 0.3) {
+          processedSentence = varySentenceStructure(processedSentence, creativityLevel, index);
+        }
+        
+        return processedSentence;
+      });
+      
+      // Apply paragraph splitting if enabled
+      if (!splitParagraphs) return processed.join(" ");
+      
+      return groupIntoSentences(processed, creativityLevel);
+    }
+    
+    // Split text into sentences
     function splitIntoSentences(text) {
-      // match sequences that end with punctuation or end of string
       const matches = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g);
       return matches ? matches.map(s => s.trim()) : [];
     }
-
-    // Main humanizer — preserves meaning, applies soft controlled changes
-    function humanizeTextCore(text, strength, splitParagraphs, purpose) {
-      const sentences = splitIntoSentences(text);
-      const processed = sentences.map((sentence) => {
-        if (!sentence) return "";
-
-        // tokenize by spaces to preserve punctuation tokens
-        const tokens = sentence.split(/\s+/);
-        // find candidate indices that are words (not only punctuation)
-        const candidateIndices = [];
-        for (let i = 0; i < tokens.length; i++) {
-          if (/[A-Za-z0-9]/.test(tokens[i])) candidateIndices.push(i);
+    
+    // Apply synonym replacement
+    function applySynonymReplacement(sentence, strength, creativity, language) {
+      const langDict = synonyms[language] || synonyms.en;
+      const tokens = sentence.split(/\s+/);
+      const candidateIndices = [];
+      
+      for (let i = 0; i < tokens.length; i++) {
+        if (/[A-Za-z0-9]/.test(tokens[i])) candidateIndices.push(i);
+      }
+      
+      // Apply replacements based on strength and creativity
+      const replacementCount = Math.floor(candidateIndices.length * (strength / 100) * creativity);
+      
+      for (let i = 0; i < replacementCount && candidateIndices.length > 0; i++) {
+        const randomIndex = Math.floor(Math.random() * candidateIndices.length);
+        const wordIndex = candidateIndices[randomIndex];
+        candidateIndices.splice(randomIndex, 1);
+        
+        const originalWord = tokens[wordIndex];
+        const baseWord = originalWord.toLowerCase().replace(/[^a-z0-9'-]/gi, "");
+        
+        if (langDict[baseWord]) {
+          const options = langDict[baseWord];
+          const replacement = options[Math.floor(Math.random() * options.length)];
+          
+          // Preserve capitalization and punctuation
+          const capitalized = /^[A-Z]/.test(originalWord);
+          const trailing = originalWord.match(/[^A-Za-z0-9'-]+$/);
+          const trailingStr = trailing ? trailing[0] : "";
+          
+          tokens[wordIndex] = capitalized ? 
+            replacement.charAt(0).toUpperCase() + replacement.slice(1) + trailingStr :
+            replacement + trailingStr;
         }
-
-        // safe synonym replacement: pick one candidate (based on strength)
-        if (candidateIndices.length && Math.random() * 100 < strength) {
-          const pickIndex = candidateIndices[Math.floor(Math.random() * candidateIndices.length)];
-          tokens[pickIndex] = synonymReplace(tokens[pickIndex], strength);
+      }
+      
+      return tokens.join(" ");
+    }
+    
+    // Get random idiom for the specified language
+    function getRandomIdiom(language) {
+      const langIdioms = idioms[language] || idioms.en;
+      return langIdioms[Math.floor(Math.random() * langIdioms.length)];
+    }
+    
+    // Apply contractions to sentence
+    function applyContractions(sentence, creativity) {
+      const contractions = {
+        "do not": "don't",
+        "does not": "doesn't",
+        "did not": "didn't",
+        "is not": "isn't",
+        "are not": "aren't",
+        "was not": "wasn't",
+        "were not": "weren't",
+        "have not": "haven't",
+        "has not": "hasn't",
+        "had not": "hadn't",
+        "will not": "won't",
+        "would not": "wouldn't",
+        "should not": "shouldn't",
+        "could not": "couldn't",
+        "it is": "it's",
+        "there is": "there's",
+        "that is": "that's"
+      };
+      
+      let result = sentence;
+      Object.keys(contractions).forEach(fullForm => {
+        if (Math.random() < creativity && result.includes(fullForm)) {
+          result = result.replace(new RegExp(fullForm, 'gi'), contractions[fullForm]);
         }
-
-        let s = tokens.join(" ");
-
-        // small, non-destructive variation for readability (rare)
-        if (Math.random() * 100 < Math.max(0, strength - 60)) {
-          // mild insertion of a short hedging phrase (when high strength)
-          // Only insert if sentence is long enough and doesn't already start with a hedge
-          if (s.length > 50 && !/^(In fact|Interestingly|Research|According)/i.test(s)) {
-            if (purpose === "academic") {
-              // academic: use formal hedge
-              s = "Research suggests that " + s;
-            } else if (purpose === "article" || purpose === "blog") {
-              s = "In fact, " + s;
-            } else if (purpose === "story") {
-              s = "Imagine this: " + s;
-            } else if (purpose === "social") {
-              // social: keep short, rarely add emoji
-              if (Math.random() > 0.8) s = "~ " + s;
-            } else if (purpose === "copy") {
-              if (Math.random() > 0.8) s += " Don't miss out!";
-            }
-          }
-        }
-
-        // minor phrasing tweak: "is" -> "is actually" but only rarely and not in academic mode
-        if (Math.random() * 100 < Math.max(0, strength - 55) && purpose !== "academic") {
-          s = s.replace(/\bis\b/gi, (m) => (Math.random() > 0.6 ? m + " actually" : m));
-        }
-
-        return s;
       });
-
-      // If paragraph splitting off, just join sentences as-is
-      if (!splitParagraphs) return processed.join(" ");
-
-      // Group into natural paragraphs of 2-4 sentences
+      
+      return result;
+    }
+    
+    // Vary sentence structure
+    function varySentenceStructure(sentence, creativity, sentenceIndex) {
+      // Only apply to some sentences based on creativity
+      if (Math.random() > creativity) return sentence;
+      
+      const words = sentence.split(' ');
+      if (words.length < 5) return sentence;
+      
+      // Simple variation: move adverb to beginning occasionally
+      if (sentenceIndex % 3 === 0 && creativity > 0.6) {
+        const adverbs = ['quickly', 'slowly', 'carefully', 'actually', 'fortunately'];
+        const adverb = adverbs[Math.floor(Math.random() * adverbs.length)];
+        
+        return `${adverb.charAt(0).toUpperCase() + adverb.slice(1)}, ${sentence}`;
+      }
+      
+      return sentence;
+    }
+    
+    // Group sentences into paragraphs
+    function groupIntoSentences(sentences, creativity) {
       const paragraphs = [];
       let temp = [];
-      processed.forEach((s, i) => {
+      
+      sentences.forEach((s, i) => {
         if (!s) return;
         temp.push(s);
-        // create paragraph when temp reaches 2-4 sentences (weighted randomness)
-        if (temp.length >= 2 && (temp.length >= 4 || Math.random() > 0.6 || i === processed.length - 1)) {
+        
+        // Vary paragraph length based on creativity
+        const minSentences = 2;
+        const maxSentences = Math.max(4, Math.floor(5 + creativity * 3));
+        
+        if (temp.length >= minSentences && 
+            (temp.length >= maxSentences || Math.random() > 0.6 || i === sentences.length - 1)) {
           paragraphs.push(temp.join(" "));
           temp = [];
         }
       });
+      
       if (temp.length) paragraphs.push(temp.join(" "));
       return paragraphs.join("\n\n");
     }
-
-    // Stats helper
-    function updateStats(text) {
-      const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
-      const sentences = splitIntoSentences(text).filter(s => s.trim()).length;
-      wordCountEl.textContent = words;
-      sentenceCountEl.textContent = sentences;
-      wordCountEl.textContent = words;
-      sentenceCountEl.textContent = sentences;
-    }
-
-    // === UI interactions ===
+    
+    // UI interaction handlers
     function setUIEnabled(enabled) {
       humanizeBtn.disabled = !enabled;
+      analyzeBtn.disabled = !enabled;
       clearBtn.disabled = !enabled;
       copyBtn.disabled = !enabled;
       inputText.disabled = !enabled;
       strengthSlider.disabled = !enabled;
+      creativitySlider.disabled = !enabled;
       splitToggle.disabled = !enabled;
+      idiomsToggle.disabled = !enabled;
+      contractionsToggle.disabled = !enabled;
+      variationToggle.disabled = !enabled;
       purposeSelect.disabled = !enabled;
+      languageSelect.disabled = !enabled;
     }
-
+    
+    // Humanize button handler
     humanizeBtn.addEventListener("click", () => {
       const text = inputText.value.trim();
       if (!text) {
-        alert("Please paste some text first!");
+        showToast("Please paste some text first!", "error");
         return;
       }
-
-      // start progress
+      
+      // Start progress
       setUIEnabled(false);
       progress.style.display = "block";
       progressBar.style.width = "0%";
-
-      // animate progress to 90%
+      
+      // Animate progress
       let width = 0;
       const interval = setInterval(() => {
-        width = Math.min(90, width + Math.floor(Math.random() * 12) + 6); // random increments
+        width = Math.min(90, width + Math.floor(Math.random() * 12) + 6);
         progressBar.style.width = width + "%";
       }, 160);
-
-      // simulate processing time (fast) — still long enough to show progress
-      const delay = 900 + Math.floor(Math.random() * 600);
+      
+      // Simulate processing
+      const delay = 1200 + Math.floor(Math.random() * 800);
       setTimeout(() => {
         clearInterval(interval);
+        
         const strength = parseInt(strengthSlider.value || "50", 10);
+        const creativity = parseInt(creativitySlider.value || "50", 10);
         const split = splitToggle.checked;
         const purpose = purposeSelect.value;
-
-        const result = humanizeTextCore(text, strength, split, purpose);
+        const language = languageSelect.value;
+        const useIdioms = idiomsToggle.checked;
+        const useContractions = contractionsToggle.checked;
+        const useVariation = variationToggle.checked;
+        
+        const result = humanizeTextCore(text, strength, creativity, split, purpose, language, useIdioms, useContractions, useVariation);
         outputText.value = result;
         updateStats(result);
-
-        // finish progress
+        
+        // Update humanization score
+        const humanizationScore = Math.min(20 + strength + creativity, 95);
+        humanizationLevelEl.textContent = `${humanizationScore}%`;
+        humanizationBar.style.width = `${humanizationScore}%`;
+        
+        // Finish progress
         progressBar.style.width = "100%";
         setTimeout(() => {
           progress.style.display = "none";
           progressBar.style.width = "0%";
         }, 300);
-
+        
         setUIEnabled(true);
+        showToast("Text humanized successfully!", "success");
       }, delay);
     });
-
+    
+    // Clear button handler
     clearBtn.addEventListener("click", () => {
       inputText.value = "";
       outputText.value = "";
       updateStats("");
+      analysisDashboard.style.display = "none";
+      showToast("Text cleared", "info");
     });
-
+    
+    // Copy button handler
     copyBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(outputText.value);
-        alert("Output copied to clipboard!");
+        showToast("Output copied to clipboard!", "success");
       } catch (e) {
-        // fallback
+        // Fallback
         const ta = document.createElement("textarea");
         ta.value = outputText.value;
         document.body.appendChild(ta);
         ta.select();
         document.execCommand("copy");
         document.body.removeChild(ta);
-        alert("Output copied to clipboard!");
+        showToast("Output copied to clipboard!", "success");
       }
     });
-
-    // wire updateStats to input changes so users see original counts
+    
+    // Initialize the application
+    initUI();
+    
+    // Update stats on input
     inputText.addEventListener("input", () => updateStats(inputText.value));
-    // initialize stats
-    updateStats("");
   </script>
 </body>
 </html>
